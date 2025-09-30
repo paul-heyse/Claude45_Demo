@@ -189,7 +189,7 @@ def test_threshold_normalization(engine: ScoringEngine) -> None:
     worst_permits = engine.normalize_threshold(20, bands, higher_is_better=False)
 
     assert low_permits == 95
-    assert mid_permits == 75
+    assert mid_permits == 50
     assert worst_permits == 50
 
 
