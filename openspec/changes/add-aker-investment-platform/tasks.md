@@ -82,7 +82,7 @@
 
 - [x] 7.1 Implement Colorado-specific logic (hail risk, DWR water rights)
 - [x] 7.2 Implement Utah-specific logic (topography, Silicon Slopes data)
-- [ ] 7.3 Implement Idaho-specific logic (migration metrics, forest interface)
+- [x] 7.3 Implement Idaho-specific logic (migration metrics, forest interface)
 - [ ] 7.4 Create state-specific data connectors (CO CDSS, UT DWR, ID DWR)
 - [ ] 7.5 Build state regulatory pattern library
 - [ ] 7.6 Write state-specific integration tests

@@ -86,9 +86,7 @@ class TestSiliconSlopesEmployment:
             "startup_density": 45,  # per 100k residents
         }
 
-        monkeypatch.setattr(
-            ut_analyzer, "_query_edc_utah", lambda *a, **k: mock_data
-        )
+        monkeypatch.setattr(ut_analyzer, "_query_edc_utah", lambda *a, **k: mock_data)
 
         result = ut_analyzer.analyze_silicon_slopes_employment(
             county_fips="49049"  # Utah County
@@ -110,9 +108,7 @@ class TestSiliconSlopesEmployment:
             "startup_density": 10,
         }
 
-        monkeypatch.setattr(
-            ut_analyzer, "_query_edc_utah", lambda *a, **k: mock_data
-        )
+        monkeypatch.setattr(ut_analyzer, "_query_edc_utah", lambda *a, **k: mock_data)
 
         result = ut_analyzer.analyze_silicon_slopes_employment(
             county_fips="49027"  # Cache County
@@ -145,9 +141,7 @@ class TestUtahWaterRights:
             "drought_status": "moderate",
         }
 
-        monkeypatch.setattr(
-            ut_analyzer, "_query_ut_dwr", lambda *a, **k: mock_response
-        )
+        monkeypatch.setattr(ut_analyzer, "_query_ut_dwr", lambda *a, **k: mock_response)
 
         result = ut_analyzer.assess_water_rights(
             county_fips="49035", parcel_id="12-34-56"  # Salt Lake County
@@ -170,9 +164,7 @@ class TestUtahWaterRights:
             "drought_status": "severe",
         }
 
-        monkeypatch.setattr(
-            ut_analyzer, "_query_ut_dwr", lambda *a, **k: mock_response
-        )
+        monkeypatch.setattr(ut_analyzer, "_query_ut_dwr", lambda *a, **k: mock_response)
 
         result = ut_analyzer.assess_water_rights(
             county_fips="49057", parcel_id="99"  # Weber County
@@ -219,9 +211,7 @@ class TestUtahSeismicRisk:
         THEN: High seismic risk, structural requirements
         """
         # Salt Lake City near fault trace
-        result = ut_analyzer.assess_seismic_risk(
-            latitude=40.7608, longitude=-111.8910
-        )
+        result = ut_analyzer.assess_seismic_risk(latitude=40.7608, longitude=-111.8910)
 
         assert result["fault_proximity_miles"] < 5.0
         assert result["seismic_design_category"] in ["D", "E"]
