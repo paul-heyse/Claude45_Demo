@@ -1,0 +1,112 @@
+{
+    "colorado": {
+        "Boulder": {
+            "state": "CO",
+            "median_permit_days": 210,
+            "p90_permit_days": 300,
+            "design_review_required": true,
+            "inclusionary_zoning_pct": 25,
+            "notes": "High regulatory friction, strong design review board"
+        },
+        "Denver": {
+            "state": "CO",
+            "median_permit_days": 120,
+            "p90_permit_days": 180,
+            "design_review_required": false,
+            "inclusionary_zoning_pct": 10,
+            "notes": "Moderate permitting timeline, 10% IZ requirement"
+        },
+        "Aurora": {
+            "state": "CO",
+            "median_permit_days": 45,
+            "p90_permit_days": 75,
+            "design_review_required": false,
+            "inclusionary_zoning_pct": 0,
+            "notes": "Streamlined permitting, developer-friendly"
+        },
+        "Fort Collins": {
+            "state": "CO",
+            "median_permit_days": 90,
+            "p90_permit_days": 135,
+            "design_review_required": false,
+            "inclusionary_zoning_pct": 0,
+            "notes": "Moderate timeline, no IZ requirements"
+        },
+        "Colorado Springs": {
+            "state": "CO",
+            "median_permit_days": 75,
+            "p90_permit_days": 110,
+            "design_review_required": false,
+            "inclusionary_zoning_pct": 0,
+            "notes": "Business-friendly environment"
+        }
+    },
+    "utah": {
+        "Salt Lake City": {
+            "state": "UT",
+            "median_permit_days": 90,
+            "p90_permit_days": 135,
+            "design_review_required": true,
+            "inclusionary_zoning_pct": 0,
+            "notes": "Design review in historic districts, generally pro-development"
+        },
+        "Provo": {
+            "state": "UT",
+            "median_permit_days": 60,
+            "p90_permit_days": 90,
+            "design_review_required": false,
+            "inclusionary_zoning_pct": 0,
+            "notes": "Fast permitting, Silicon Slopes growth area"
+        },
+        "Ogden": {
+            "state": "UT",
+            "median_permit_days": 75,
+            "p90_permit_days": 105,
+            "design_review_required": false,
+            "inclusionary_zoning_pct": 0,
+            "notes": "Streamlined for multifamily development"
+        },
+        "West Jordan": {
+            "state": "UT",
+            "median_permit_days": 50,
+            "p90_permit_days": 75,
+            "design_review_required": false,
+            "inclusionary_zoning_pct": 0,
+            "notes": "Rapidly growing, developer-friendly"
+        }
+    },
+    "idaho": {
+        "Boise": {
+            "state": "ID",
+            "median_permit_days": 60,
+            "p90_permit_days": 90,
+            "design_review_required": false,
+            "inclusionary_zoning_pct": 0,
+            "notes": "Growing market, reasonable permitting timelines"
+        },
+        "Meridian": {
+            "state": "ID",
+            "median_permit_days": 50,
+            "p90_permit_days": 75,
+            "design_review_required": false,
+            "inclusionary_zoning_pct": 0,
+            "notes": "Fastest-growing ID city, streamlined permits"
+        },
+        "Nampa": {
+            "state": "ID",
+            "median_permit_days": 55,
+            "p90_permit_days": 80,
+            "design_review_required": false,
+            "inclusionary_zoning_pct": 0,
+            "notes": "Treasure Valley growth, moderate timelines"
+        },
+        "Coeur d'Alene": {
+            "state": "ID",
+            "median_permit_days": 70,
+            "p90_permit_days": 100,
+            "design_review_required": false,
+            "inclusionary_zoning_pct": 0,
+            "notes": "Resort area, some seasonal delays"
+        }
+    }
+}
