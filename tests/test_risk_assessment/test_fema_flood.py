@@ -2,12 +2,7 @@
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING
-
 import pytest
-
-if TYPE_CHECKING:
-    from Claude45_Demo.risk_assessment.fema_flood import FEMAFloodAnalyzer
 
 
 class TestFEMAFloodZoneClassification:
@@ -270,4 +265,3 @@ def flood_analyzer():
     from Claude45_Demo.risk_assessment.fema_flood import FEMAFloodAnalyzer
 
     return FEMAFloodAnalyzer()
-

@@ -2,9 +2,9 @@
 
 from __future__ import annotations
 
-from .fema_flood import FEMAFloodAnalyzer
+from .wildfire import WildfireRiskAnalyzer
 
 __all__ = [
-    "FEMAFloodAnalyzer",
+    "WildfireRiskAnalyzer",
 ]
 

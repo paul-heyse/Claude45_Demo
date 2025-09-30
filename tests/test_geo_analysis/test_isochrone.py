@@ -179,7 +179,9 @@ def test_isochrone_calculation_counts_pois(
     def _fake_post(*_, **__):
         return DummyORSResponse(response_payload)
 
-    monkeypatch.setattr("Claude45_Demo.geo_analysis.isochrone.requests.post", _fake_post)
+    monkeypatch.setattr(
+        "Claude45_Demo.geo_analysis.isochrone.requests.post", _fake_post
+    )
 
     amenities = _amenities_inside_polygon()
     population = _population_blocks()
@@ -202,7 +204,9 @@ def test_isochrone_calculation_counts_pois(
     assert result.area_sq_km > 0
 
 
-def test_drive_isochrone_uses_cache(calculator: IsochroneCalculator, monkeypatch) -> None:
+def test_drive_isochrone_uses_cache(
+    calculator: IsochroneCalculator, monkeypatch
+) -> None:
     """Second call with same parameters should reuse cached isochrone."""
 
     call_count = {"value": 0}
@@ -211,7 +215,9 @@ def test_drive_isochrone_uses_cache(calculator: IsochroneCalculator, monkeypatch
         call_count["value"] += 1
         return DummyORSResponse(DRIVE_RESPONSE)
 
-    monkeypatch.setattr("Claude45_Demo.geo_analysis.isochrone.requests.post", _fake_post)
+    monkeypatch.setattr(
+        "Claude45_Demo.geo_analysis.isochrone.requests.post", _fake_post
+    )
 
     amenities = _amenities_inside_polygon()
     population = _population_blocks()
@@ -245,12 +251,17 @@ def test_multimodal_isochrone_unions_polygons(
 ) -> None:
     """Multimodal calculation unions individual leg isochrones."""
 
-    responses = [DummyORSResponse(TRANSIT_WALK_RESPONSE), DummyORSResponse(TRANSIT_RAIL_RESPONSE)]
+    responses = [
+        DummyORSResponse(TRANSIT_WALK_RESPONSE),
+        DummyORSResponse(TRANSIT_RAIL_RESPONSE),
+    ]
 
     def _fake_post(*_, **__):
         return responses.pop(0)
 
-    monkeypatch.setattr("Claude45_Demo.geo_analysis.isochrone.requests.post", _fake_post)
+    monkeypatch.setattr(
+        "Claude45_Demo.geo_analysis.isochrone.requests.post", _fake_post
+    )
 
     amenities = _amenities_inside_polygon()
     population = _population_blocks()
