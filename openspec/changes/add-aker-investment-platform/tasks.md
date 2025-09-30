@@ -15,7 +15,7 @@
 
 ## 2. Geographic Analysis Module
 
-- [ ] 2.1 Implement OpenStreetMap Overpass API connector for POI data
+- [x] 2.1 Implement OpenStreetMap Overpass API connector for POI data
 - [ ] 2.2 Implement GTFS/Transitland connector for transit analysis
 - [ ] 2.3 Build isochrone calculator using OSRM or OpenRouteService
 - [ ] 2.4 Create 15-minute walkability scoring algorithm

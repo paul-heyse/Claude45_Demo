@@ -11,7 +11,7 @@ import logging
 import pickle
 import sqlite3
 from contextlib import contextmanager
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from typing import Any, Generator, Optional
 
@@ -69,9 +69,9 @@ class CacheManager:
             conn.commit()
 
     def _current_time(self) -> datetime:
-        """Return current naive timestamp (wrapped for monkeypatching in tests)."""
+        """Return current UTC timestamp (wrapped for monkeypatching in tests)."""
 
-        return datetime.now()
+        return datetime.now(timezone.utc)
 
     def get(
         self,

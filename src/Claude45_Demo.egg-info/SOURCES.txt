@@ -9,6 +9,12 @@ src/Claude45_Demo.egg-info/requires.txt
 src/Claude45_Demo.egg-info/top_level.txt
 src/Claude45_Demo/data_integration/__init__.py
 src/Claude45_Demo/data_integration/base.py
+src/Claude45_Demo/data_integration/bea.py
+src/Claude45_Demo/data_integration/bls.py
 src/Claude45_Demo/data_integration/cache.py
+src/Claude45_Demo/data_integration/census.py
+src/Claude45_Demo/data_integration/config.py
 src/Claude45_Demo/data_integration/exceptions.py
+src/Claude45_Demo/data_integration/irs.py
+src/Claude45_Demo/data_integration/lodes.py
 tests/test_basic.py
