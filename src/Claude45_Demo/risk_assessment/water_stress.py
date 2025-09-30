@@ -149,4 +149,3 @@ class WaterStressAnalyzer:
             "recommendation": recommendation,
             "components": components,
         }
-

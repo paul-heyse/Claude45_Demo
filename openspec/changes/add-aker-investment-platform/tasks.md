@@ -45,12 +45,12 @@
 - [x] 4.2 Build wildfire risk calculator using USFS WHP and LANDFIRE
 - [x] 4.3 Create air quality analyzer (EPA AQS, NOAA smoke days)
 - [x] 4.4 Implement hazard overlay system (seismic, hail, radon)
-- [ ] 4.5 Build regulatory friction estimator (permit timelines, zoning)
-- [ ] 4.6 Create water stress assessment (rights, drought, tap availability)
-- [ ] 4.7 Implement climate risk insurance cost proxy
-- [ ] 4.8 Build EPA ECHO environmental compliance checker
-- [ ] 4.9 Write risk assessment tests with known hazard areas
-- [ ] 4.10 Create risk multiplier calculation for underwriting
+- [x] 4.5 Build regulatory friction estimator (permit timelines, zoning)
+- [x] 4.6 Create water stress assessment (rights, drought, tap availability)
+- [x] 4.7 Implement climate risk insurance cost proxy
+- [x] 4.8 Build EPA ECHO environmental compliance checker
+- [x] 4.9 Write risk assessment tests with known hazard areas
+- [x] 4.10 Create risk multiplier calculation for underwriting
 
 ## 5. Scoring Engine
 

@@ -117,4 +117,3 @@ class RiskMultiplierCalculator:
             "flood_premium_pct": round(flood_premium, 2),
             "hail_premium_pct": round(hail_premium, 2),
         }
-
