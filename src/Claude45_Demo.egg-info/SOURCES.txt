@@ -8,11 +8,17 @@ src/Claude45_Demo.egg-info/entry_points.txt
 src/Claude45_Demo.egg-info/requires.txt
 src/Claude45_Demo.egg-info/top_level.txt
 src/Claude45_Demo/asset_evaluation/__init__.py
+src/Claude45_Demo/asset_evaluation/amenities.py
+src/Claude45_Demo/asset_evaluation/capex.py
 src/Claude45_Demo/asset_evaluation/deal_archetype.py
+src/Claude45_Demo/asset_evaluation/diligence.py
+src/Claude45_Demo/asset_evaluation/operations.py
+src/Claude45_Demo/asset_evaluation/parking.py
 src/Claude45_Demo/asset_evaluation/product_type.py
 src/Claude45_Demo/asset_evaluation/unit_mix.py
 src/Claude45_Demo/cli/__init__.py
 src/Claude45_Demo/cli/main.py
+src/Claude45_Demo/cli/screening.py
 src/Claude45_Demo/data_integration/__init__.py
 src/Claude45_Demo/data_integration/base.py
 src/Claude45_Demo/data_integration/bea.py
@@ -52,4 +58,5 @@ src/Claude45_Demo/scoring_engine/__init__.py
 src/Claude45_Demo/scoring_engine/scoring_engine.py
 src/Claude45_Demo/state_rules/__init__.py
 src/Claude45_Demo/state_rules/colorado.py
+src/Claude45_Demo/state_rules/utah.py
 tests/test_basic.py

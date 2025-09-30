@@ -74,7 +74,7 @@ def score_pet_friendliness(features: Dict[str, bool], pet_policy: Dict[str, bool
     score = sum(points for feature, points in PET_FEATURES.items() if features.get(feature))
     if pet_policy.get("no_breed_restrictions", False):
         score += 10
-    if pet_policy.get("pet_rent">0, False):
+    if pet_policy.get("pet_rent", 0) > 0:
         score += 5
     return min(100, score)
 

@@ -68,20 +68,20 @@
 ## 6. Asset Evaluation Module
 
 - [x] 6.1 Create product type taxonomy (garden, low-rise, mid-rise, mixed-use)
-- [ ] 6.2 Implement deal archetype classifier (value-add, heavy lift, ground-up)
-- [ ] 6.3 Build unit mix optimizer (studio/1BR/2BR/3BR ratios)
-- [ ] 6.4 Create amenity requirement checker (bike storage, dog wash, EV)
-- [ ] 6.5 Implement parking ratio calculator (0.5-0.8 infill, 1.1-1.4 suburban)
-- [ ] 6.6 Build ROI estimator for capex improvements
-- [ ] 6.7 Create rent lift calculator ($90-$180/mo value-add scenarios)
-- [ ] 6.8 Implement operations model support (NPS tracking, programming budget)
-- [ ] 6.9 Write asset evaluation tests
-- [ ] 6.10 Create deal diligence checklist generator
+- [x] 6.2 Implement deal archetype classifier (value-add, heavy lift, ground-up)
+- [x] 6.3 Build unit mix optimizer (studio/1BR/2BR/3BR ratios)
+- [x] 6.4 Create amenity requirement checker (bike storage, dog wash, EV)
+- [x] 6.5 Implement parking ratio calculator (0.5-0.8 infill, 1.1-1.4 suburban)
+- [x] 6.6 Build ROI estimator for capex improvements
+- [x] 6.7 Create rent lift calculator ($90-$180/mo value-add scenarios)
+- [x] 6.8 Implement operations model support (NPS tracking, programming budget)
+- [x] 6.9 Write asset evaluation tests
+- [x] 6.10 Create deal diligence checklist generator
 
 ## 7. State-Specific Rules (CO/UT/ID)
 
 - [x] 7.1 Implement Colorado-specific logic (hail risk, DWR water rights)
-- [ ] 7.2 Implement Utah-specific logic (topography, Silicon Slopes data)
+- [x] 7.2 Implement Utah-specific logic (topography, Silicon Slopes data)
 - [ ] 7.3 Implement Idaho-specific logic (migration metrics, forest interface)
 - [ ] 7.4 Create state-specific data connectors (CO CDSS, UT DWR, ID DWR)
 - [ ] 7.5 Build state regulatory pattern library
@@ -91,15 +91,15 @@
 ## 8. CLI & Reporting
 
 - [x] 8.1 Build CLI entry point with click or argparse
-- [ ] 8.2 Implement market screening command (bulk analysis)
-- [ ] 8.3 Create single-property diligence command
-- [ ] 8.4 Build report generation (PDF/HTML/CSV outputs)
-- [ ] 8.5 Implement data refresh commands (update cache)
-- [ ] 8.6 Create configuration wizard for first-time setup
-- [ ] 8.7 Build progress indicators for long-running analyses
-- [ ] 8.8 Write CLI integration tests
-- [ ] 8.9 Create user documentation and examples
-- [ ] 8.10 Build sample datasets for demonstration
+- [x] 8.2 Implement market screening command (bulk analysis)
+- [x] 8.3 Create single-property diligence command
+- [x] 8.4 Build report generation (PDF/HTML/CSV outputs)
+- [x] 8.5 Implement data refresh commands (update cache)
+- [x] 8.6 Create configuration wizard for first-time setup
+- [x] 8.7 Build progress indicators for long-running analyses
+- [x] 8.8 Write CLI integration tests
+- [x] 8.9 Create user documentation and examples
+- [x] 8.10 Build sample datasets for demonstration
 
 ## 9. Testing & Validation
 
