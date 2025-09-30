@@ -7,4 +7,3 @@ from .wildfire import WildfireRiskAnalyzer
 __all__ = [
     "WildfireRiskAnalyzer",
 ]
-

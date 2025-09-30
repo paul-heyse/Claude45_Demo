@@ -261,4 +261,3 @@ class WildfireRiskAnalyzer:
             "recommendations": recommendations,
             "components": components,
         }
-

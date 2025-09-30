@@ -16,15 +16,15 @@
 ## 2. Geographic Analysis Module
 
 - [x] 2.1 Implement OpenStreetMap Overpass API connector for POI data
- - [x] 2.2 Implement GTFS/Transitland connector for transit analysis
- - [x] 2.3 Build isochrone calculator using OSRM or OpenRouteService
- - [x] 2.4 Create 15-minute walkability scoring algorithm
- - [x] 2.5 Implement USGS 3DEP elevation/slope analysis
- - [x] 2.6 Build trail proximity calculator using NPS/RIDB APIs
- - [x] 2.7 Create outdoor recreation access scoring (trails, parks, water)
- - [x] 2.8 Implement intersection density and bikeway connectivity metrics
- - [x] 2.9 Write unit tests for all geospatial calculations
- - [x] 2.10 Create visualization module for mapping results
+- [x] 2.2 Implement GTFS/Transitland connector for transit analysis
+- [x] 2.3 Build isochrone calculator using OSRM or OpenRouteService
+- [x] 2.4 Create 15-minute walkability scoring algorithm
+- [x] 2.5 Implement USGS 3DEP elevation/slope analysis
+- [x] 2.6 Build trail proximity calculator using NPS/RIDB APIs
+- [x] 2.7 Create outdoor recreation access scoring (trails, parks, water)
+- [x] 2.8 Implement intersection density and bikeway connectivity metrics
+- [x] 2.9 Write unit tests for all geospatial calculations
+- [x] 2.10 Create visualization module for mapping results
 
 ## 3. Market Analysis Module
 
@@ -42,7 +42,7 @@
 ## 4. Risk Assessment Module
 
 - [x] 4.1 Implement FEMA flood zone analysis (NFHL WMS/WFS)
-- [ ] 4.2 Build wildfire risk calculator using USFS WHP and LANDFIRE
+- [x] 4.2 Build wildfire risk calculator using USFS WHP and LANDFIRE
 - [ ] 4.3 Create air quality analyzer (EPA AQS, NOAA smoke days)
 - [ ] 4.4 Implement hazard overlay system (seismic, hail, radon)
 - [ ] 4.5 Build regulatory friction estimator (permit timelines, zoning)

@@ -36,6 +36,7 @@ src/Claude45_Demo/market_analysis/elasticity.py
 src/Claude45_Demo/market_analysis/employment.py
 src/Claude45_Demo/market_analysis/supply_constraint.py
 src/Claude45_Demo/risk_assessment/__init__.py
+src/Claude45_Demo/risk_assessment/fema_flood.py
 src/Claude45_Demo/scoring_engine/__init__.py
 src/Claude45_Demo/scoring_engine/scoring_engine.py
 tests/test_basic.py

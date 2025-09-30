@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from typing import Iterable, Mapping, Sequence
+from typing import Iterable, Mapping, Sequence, Tuple
 
 from shapely.geometry import LineString, Point
 
@@ -29,7 +29,7 @@ def compute_block_size_score(mean_block_perimeter_m: float) -> float:
 
 
 def compute_bikeway_metrics(
-    bikeways: Iterable[LineString],
+    bikeways: Iterable[object],
     *,
     protected_tags: Mapping[str, bool],
     population: int,
@@ -39,11 +39,22 @@ def compute_bikeway_metrics(
     total_length_miles = 0.0
     protected_length_miles = 0.0
 
-    for line in bikeways:
-        length_miles = line.length * 0.000621371
+    for entry in bikeways:
+        geometry: LineString
+        tag: str | None
+
+        if isinstance(entry, tuple) and len(entry) == 2:
+            geometry, tag = entry  # type: ignore[assignment]
+        elif isinstance(entry, Mapping):
+            geometry = entry["geometry"]  # type: ignore[index]
+            tag = entry.get("tag") or entry.get("type")
+        else:
+            geometry = entry  # type: ignore[assignment]
+            tag = getattr(entry, "tag", None)
+
+        length_miles = geometry.length * 0.000621371
         total_length_miles += length_miles
-        tag = getattr(line, "tag", "")
-        if protected_tags.get(tag, False):
+        if tag and protected_tags.get(tag, False):
             protected_length_miles += length_miles
 
     miles_per_10k = total_length_miles / population * 10000 if population > 0 else 0.0

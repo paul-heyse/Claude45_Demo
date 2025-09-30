@@ -122,7 +122,9 @@ class FEMAFloodAnalyzer:
     ) -> Mapping[str, object]:
         events = list(mock_events)
         event_count = len(events)
-        major_events = sum(1 for event in events if event.get("severity", "").lower() == "major")
+        major_events = sum(
+            1 for event in events if event.get("severity", "").lower() == "major"
+        )
         chronic_flooding = event_count >= 4
         historical_score = min(100, event_count * 15 + major_events * 10)
 
@@ -145,7 +147,8 @@ class FEMAFloodAnalyzer:
         high_hazard = [
             dam
             for dam in dams
-            if dam.get("hazard_class") == "H" and dam.get("distance_km", 0) <= search_radius_km
+            if dam.get("hazard_class") == "H"
+            and dam.get("distance_km", 0) <= search_radius_km
         ]
 
         risk_flag = bool(high_hazard)

@@ -24,12 +24,10 @@ def test_intersection_density_and_block_size() -> None:
 
 def test_bikeway_metrics_counts_protected_segments() -> None:
     line1 = LineString([(0, 0), (1, 0)])
-    line1.tag = "protected"
     line2 = LineString([(0, 0), (0, 2)])
-    line2.tag = "painted"
 
     metrics = compute_bikeway_metrics(
-        [line1, line2],
+        [(line1, "protected"), (line2, "painted")],
         protected_tags={"protected": True},
         population=50000,
     )
