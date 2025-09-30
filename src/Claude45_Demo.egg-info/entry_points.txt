@@ -1,4 +1,2 @@
 [console_scripts]
-aker = Claude45_Demo.cli:main
-aker-analyze = Claude45_Demo.cli:analyze_property
-aker-screen = Claude45_Demo.cli:screen_markets
+aker-platform = Claude45_Demo.cli.main:main

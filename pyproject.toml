@@ -43,6 +43,7 @@ dependencies = [
 
     # CLI interface
     "click",
+    "rich",
 
     # Configuration management
     "python-dotenv",
@@ -83,9 +84,7 @@ all = [
 ]
 
 [project.scripts]
-aker = "Claude45_Demo.cli:main"
-aker-screen = "Claude45_Demo.cli:screen_markets"
-aker-analyze = "Claude45_Demo.cli:analyze_property"
+aker-platform = "Claude45_Demo.cli.main:main"
 
 [tool.black]
 line-length = 88

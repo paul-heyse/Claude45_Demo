@@ -90,7 +90,7 @@
 
 ## 8. CLI & Reporting
 
-- [ ] 8.1 Build CLI entry point with click or argparse
+- [x] 8.1 Build CLI entry point with click or argparse
 - [ ] 8.2 Implement market screening command (bulk analysis)
 - [ ] 8.3 Create single-property diligence command
 - [ ] 8.4 Build report generation (PDF/HTML/CSV outputs)

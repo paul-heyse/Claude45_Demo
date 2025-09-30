@@ -22,6 +22,7 @@ Requires-Dist: scipy
 Requires-Dist: matplotlib
 Requires-Dist: seaborn
 Requires-Dist: click
+Requires-Dist: rich
 Requires-Dist: python-dotenv
 Requires-Dist: pyyaml
 Requires-Dist: pydantic
