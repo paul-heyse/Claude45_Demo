@@ -41,6 +41,7 @@
 **Current Status**: 304 unit tests passing
 
 **Coverage**:
+
 - All calculators and analyzers
 - Data validation logic
 - Scoring algorithms
@@ -56,6 +57,7 @@
 **Current Status**: 21 integration tests passing
 
 **Coverage**:
+
 - Module-to-module integration
 - API connector workflows
 - Cache management
@@ -71,6 +73,7 @@
 **Current Status**: 21 CLI tests passing
 
 **Coverage**:
+
 - CLI command execution
 - Full market screening workflow
 - Report generation
@@ -159,11 +162,11 @@ def test_complete_market_analysis():
     # Initialize all components
     supply_calc = SupplyConstraintCalculator()
     employment = EmploymentAnalyzer()
-    
+
     # Run analyses
     supply_score = supply_calc.calculate_composite_score(...)
     employment_score = employment.calculate_innovation_employment_score(...)
-    
+
     # Verify integration
     assert supply_score["score"] > 0
     assert employment_score["score"] > 0
@@ -197,18 +200,21 @@ def test_screening_performance():
 ### Priority Areas
 
 **High Priority** (Must have 95%+ coverage):
+
 - Scoring algorithms
 - Risk calculations
 - Data validation
 - Exception handling
 
 **Medium Priority** (Must have 85%+ coverage):
+
 - API connectors
 - Configuration management
 - Report generation
 - CLI commands
 
 **Low Priority** (Must have 70%+ coverage):
+
 - Visualization
 - Logging
 - Documentation helpers
@@ -237,6 +243,7 @@ def analyzer():
 ### Shared Test Data
 
 Located in `tests/fixtures/`:
+
 - `sample_markets.json` - Market test data
 - `mock_api_responses/` - Mock API responses
 - `validation_datasets/` - Known good datasets
@@ -308,6 +315,7 @@ pytest --ff  # Failed first
 ### Code Quality Gates
 
 All code must pass:
+
 - ✅ pytest: All tests passing
 - ✅ ruff: No linting errors
 - ✅ black: Code formatted
@@ -317,6 +325,7 @@ All code must pass:
 ### Test Quality Standards
 
 Tests must be:
+
 - **Fast**: Unit tests < 100ms each
 - **Isolated**: No dependencies between tests
 - **Repeatable**: Same results every run
@@ -396,8 +405,8 @@ def temp_cache(tmp_path):
 
 ## Resources
 
-- **pytest Documentation**: https://docs.pytest.org/
-- **Coverage.py**: https://coverage.readthedocs.io/
+- **pytest Documentation**: <https://docs.pytest.org/>
+- **Coverage.py**: <https://coverage.readthedocs.io/>
 - **Test Best Practices**: Martin Fowler's "Test Pyramid"
 - **TDD Guide**: Kent Beck's "Test-Driven Development"
 
@@ -416,7 +425,6 @@ The Aker Investment Platform has **robust test coverage (88%)** with a comprehen
 
 ---
 
-**Last Updated**: September 30, 2025  
-**Coverage Target**: 80% (Current: 88%)  
+**Last Updated**: September 30, 2025
+**Coverage Target**: 80% (Current: 88%)
 **Tests Passing**: 346/346 (100%)
-
