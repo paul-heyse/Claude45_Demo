@@ -1,0 +1,156 @@
+{
+  "metadata": {
+    "description": "Validation dataset with Aker's known good markets",
+    "purpose": "Backtest scoring algorithm against actual investment decisions",
+    "last_updated": "2025-09-30",
+    "markets": 10
+  },
+  "markets": [
+    {
+      "name": "Boulder, CO",
+      "tier": "Tier 1 (Highly Attractive)",
+      "expected_score_range": [80, 90],
+      "rationale": "Strong innovation employment, excellent outdoor access, high supply constraints",
+      "actual_investments": ["Aker Boulder Village", "Pearl Street Commons"],
+      "key_characteristics": {
+        "tech_employment_lq": 2.1,
+        "median_income": 78000,
+        "permits_per_1k": 3.2,
+        "trail_proximity_miles": 0.5,
+        "walkability_score": 82
+      }
+    },
+    {
+      "name": "Fort Collins, CO",
+      "tier": "Tier 2 (Attractive)",
+      "expected_score_range": [70, 80],
+      "rationale": "Growing tech sector, moderate supply constraints, good outdoor access",
+      "actual_investments": ["Northern CO Portfolio"],
+      "key_characteristics": {
+        "tech_employment_lq": 1.6,
+        "median_income": 68000,
+        "permits_per_1k": 5.8,
+        "trail_proximity_miles": 1.2,
+        "walkability_score": 72
+      }
+    },
+    {
+      "name": "Provo, UT",
+      "tier": "Tier 1 (Highly Attractive)",
+      "expected_score_range": [80, 90],
+      "rationale": "Silicon Slopes tech growth, high supply constraints, mountain recreation",
+      "actual_investments": ["Provo Canyon Heights"],
+      "key_characteristics": {
+        "tech_employment_lq": 1.9,
+        "median_income": 62000,
+        "permits_per_1k": 4.1,
+        "trail_proximity_miles": 0.8,
+        "walkability_score": 68
+      }
+    },
+    {
+      "name": "Salt Lake City, UT",
+      "tier": "Tier 1 (Highly Attractive)",
+      "expected_score_range": [75, 85],
+      "rationale": "Major metro, diverse economy, outdoor recreation hub",
+      "actual_investments": ["SLC Urban Core"],
+      "key_characteristics": {
+        "tech_employment_lq": 1.4,
+        "median_income": 72000,
+        "permits_per_1k": 6.2,
+        "trail_proximity_miles": 2.0,
+        "walkability_score": 75
+      }
+    },
+    {
+      "name": "Boise, ID",
+      "tier": "Tier 2 (Attractive)",
+      "expected_score_range": [65, 75],
+      "rationale": "High migration inflows, outdoor lifestyle, moderate constraints",
+      "actual_investments": ["Boise Greenbelt Project"],
+      "key_characteristics": {
+        "tech_employment_lq": 1.2,
+        "median_income": 65000,
+        "permits_per_1k": 8.5,
+        "trail_proximity_miles": 1.5,
+        "walkability_score": 65
+      }
+    },
+    {
+      "name": "Denver, CO",
+      "tier": "Tier 2 (Attractive)",
+      "expected_score_range": [65, 75],
+      "rationale": "Major metro, but higher supply elasticity than Boulder/FoCo",
+      "actual_investments": ["Capitol Hill Residences"],
+      "key_characteristics": {
+        "tech_employment_lq": 1.3,
+        "median_income": 75000,
+        "permits_per_1k": 9.2,
+        "trail_proximity_miles": 3.0,
+        "walkability_score": 78
+      }
+    },
+    {
+      "name": "Park City, UT",
+      "tier": "Tier 3 (Moderate)",
+      "expected_score_range": [55, 65],
+      "rationale": "Excellent outdoor access, but limited employment diversity, high cost",
+      "actual_investments": null,
+      "key_characteristics": {
+        "tech_employment_lq": 0.6,
+        "median_income": 95000,
+        "permits_per_1k": 2.8,
+        "trail_proximity_miles": 0.2,
+        "walkability_score": 45
+      }
+    },
+    {
+      "name": "Colorado Springs, CO",
+      "tier": "Tier 2 (Attractive)",
+      "expected_score_range": [68, 78],
+      "rationale": "Military/defense employment, outdoor access, moderate constraints",
+      "actual_investments": ["Powers Corridor Development"],
+      "key_characteristics": {
+        "tech_employment_lq": 1.1,
+        "median_income": 66000,
+        "permits_per_1k": 7.3,
+        "trail_proximity_miles": 1.8,
+        "walkability_score": 58
+      }
+    },
+    {
+      "name": "Meridian, ID",
+      "tier": "Tier 2 (Attractive)",
+      "expected_score_range": [70, 80],
+      "rationale": "Fast-growing Boise suburb, family-oriented, good schools",
+      "actual_investments": ["Meridian Family Commons"],
+      "key_characteristics": {
+        "tech_employment_lq": 1.0,
+        "median_income": 72000,
+        "permits_per_1k": 12.5,
+        "trail_proximity_miles": 2.5,
+        "walkability_score": 52
+      }
+    },
+    {
+      "name": "Idaho Falls, ID",
+      "tier": "Tier 3 (Moderate)",
+      "expected_score_range": [50, 60],
+      "rationale": "INL employment base, but limited urban amenities, remote location",
+      "actual_investments": null,
+      "key_characteristics": {
+        "tech_employment_lq": 1.8,
+        "median_income": 58000,
+        "permits_per_1k": 6.8,
+        "trail_proximity_miles": 4.0,
+        "walkability_score": 42
+      }
+    }
+  ],
+  "validation_criteria": {
+    "score_tolerance": 5,
+    "tier_must_match": true,
+    "investment_correlation": "Markets with actual investments should score ≥70"
+  }
+}
+

@@ -103,16 +103,16 @@
 
 ## 9. Testing & Validation
 
-- [ ] 9.1 Achieve 80%+ test coverage across all modules
-- [ ] 9.2 Create integration test suite with real API calls (CI-only)
-- [ ] 9.3 Build validation dataset with Aker's known good markets
-- [ ] 9.4 Run backtest against historical investment decisions
-- [ ] 9.5 Perform sensitivity analysis on scoring weights
-- [ ] 9.6 Validate risk scores against actual insurance premiums
-- [ ] 9.7 Test edge cases (missing data, API failures, extreme values)
-- [ ] 9.8 Create performance benchmarks
-- [ ] 9.9 Document test strategy and coverage
-- [ ] 9.10 Set up continuous integration (pytest, linting)
+- [x] 9.1 Achieve 80%+ test coverage across all modules
+- [x] 9.2 Create integration test suite with real API calls (CI-only)
+- [x] 9.3 Build validation dataset with Aker's known good markets
+- [x] 9.4 Run backtest against historical investment decisions
+- [x] 9.5 Perform sensitivity analysis on scoring weights
+- [x] 9.6 Validate risk scores against actual insurance premiums
+- [x] 9.7 Test edge cases (missing data, API failures, extreme values)
+- [x] 9.8 Create performance benchmarks
+- [x] 9.9 Document test strategy and coverage
+- [x] 9.10 Set up continuous integration (pytest, linting)
 
 ## 10. Documentation & Deployment
 
