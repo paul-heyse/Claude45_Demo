@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from typing import Iterable, Mapping, Sequence, Tuple
+from typing import Iterable, Mapping, Sequence
 
 from shapely.geometry import LineString, Point
 

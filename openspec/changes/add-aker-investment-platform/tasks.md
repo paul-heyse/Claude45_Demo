@@ -43,7 +43,7 @@
 
 - [x] 4.1 Implement FEMA flood zone analysis (NFHL WMS/WFS)
 - [x] 4.2 Build wildfire risk calculator using USFS WHP and LANDFIRE
-- [ ] 4.3 Create air quality analyzer (EPA AQS, NOAA smoke days)
+- [x] 4.3 Create air quality analyzer (EPA AQS, NOAA smoke days)
 - [ ] 4.4 Implement hazard overlay system (seismic, hail, radon)
 - [ ] 4.5 Build regulatory friction estimator (permit timelines, zoning)
 - [ ] 4.6 Create water stress assessment (rights, drought, tap availability)

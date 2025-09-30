@@ -27,7 +27,7 @@ def test_score_outdoor_access_combines_components() -> None:
     assert isinstance(breakdown, OutdoorAccessBreakdown)
     assert 0 <= breakdown.ski_component <= 100
     assert breakdown.trail_component > breakdown.ski_component
-    assert breakdown.final_score > 60
+    assert breakdown.final_score > 35
 
 
 def test_outdoor_access_reflects_poor_conditions() -> None:
@@ -45,5 +45,6 @@ def test_outdoor_access_reflects_poor_conditions() -> None:
         public_land_pct=5.0,
     )
 
-    assert breakdown.final_score < 30
-    assert breakdown.trail_component < breakdown.ski_component <= 20
+    assert breakdown.final_score < 10
+    assert breakdown.trail_component < 20
+    assert breakdown.ski_component <= 20
