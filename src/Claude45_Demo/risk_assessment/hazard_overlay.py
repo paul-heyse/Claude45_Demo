@@ -241,4 +241,3 @@ class HazardOverlayAnalyzer:
             "risk_level": risk_level,
             "components": components,
         }
-

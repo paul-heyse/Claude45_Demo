@@ -156,4 +156,3 @@ class AirQualityAnalyzer:
             "recommendations": recommendations,
             "components": components,
         }
-

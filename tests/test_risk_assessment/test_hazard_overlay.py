@@ -155,4 +155,3 @@ def hazard_analyzer():
     from Claude45_Demo.risk_assessment.hazard_overlay import HazardOverlayAnalyzer
 
     return HazardOverlayAnalyzer()
-

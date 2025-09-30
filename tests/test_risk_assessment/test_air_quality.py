@@ -104,9 +104,7 @@ class TestCompositeAirQualityRisk:
 
         assert result["composite_score"] >= 75
         assert result["risk_level"] == "high"
-        assert any(
-            "air filtration" in rec.lower() for rec in result["recommendations"]
-        )
+        assert any("air filtration" in rec.lower() for rec in result["recommendations"])
 
     def test_low_air_quality_risk(self, air_quality_analyzer):
         """Test composite low air quality risk."""
@@ -127,4 +125,3 @@ def air_quality_analyzer():
     from Claude45_Demo.risk_assessment.air_quality import AirQualityAnalyzer
 
     return AirQualityAnalyzer()
-

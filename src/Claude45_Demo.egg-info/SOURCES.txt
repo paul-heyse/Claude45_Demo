@@ -34,9 +34,13 @@ src/Claude45_Demo/market_analysis/convenience.py
 src/Claude45_Demo/market_analysis/demographics.py
 src/Claude45_Demo/market_analysis/elasticity.py
 src/Claude45_Demo/market_analysis/employment.py
+src/Claude45_Demo/market_analysis/report.py
 src/Claude45_Demo/market_analysis/supply_constraint.py
 src/Claude45_Demo/risk_assessment/__init__.py
+src/Claude45_Demo/risk_assessment/air_quality.py
 src/Claude45_Demo/risk_assessment/fema_flood.py
+src/Claude45_Demo/risk_assessment/hazard_overlay.py
+src/Claude45_Demo/risk_assessment/wildfire.py
 src/Claude45_Demo/scoring_engine/__init__.py
 src/Claude45_Demo/scoring_engine/scoring_engine.py
 tests/test_basic.py

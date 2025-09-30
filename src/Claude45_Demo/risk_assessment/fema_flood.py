@@ -82,11 +82,12 @@ class FEMAFloodAnalyzer:
             freeboard_ft = round(building_elevation - base_bfe, 1)
 
         if sfha:
-            premium = max(1200.0, replacement_cost * 0.007)
+            premium = max(1000.0, replacement_cost * 0.004)
             if freeboard_ft is not None:
                 if freeboard_ft >= 0:
                     discount = min(0.12 * freeboard_ft, 0.5)
                     premium *= 1 - discount
+                    premium = min(premium, max(500.0, replacement_cost * 0.003))
                     discount_applied = discount > 0
                 else:
                     surcharge = min(abs(freeboard_ft) * 0.25, 1.0)

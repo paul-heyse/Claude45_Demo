@@ -4,8 +4,7 @@ from __future__ import annotations
 
 import logging
 import math
-from collections import defaultdict
-from typing import Any, Dict, Iterable, List, Mapping, Sequence
+from typing import Any, Iterable, Mapping, Sequence
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -15,12 +14,7 @@ logger = logging.getLogger(__name__)
 
 
 class ScoringEngine:
-    """
-    Calculate composite investment scores using weighted components.
-
-    Combines market analysis, geographic analysis, and risk assessment
-    into final investment attractiveness scores.
-    """
+    """Calculate composite and risk-adjusted investment scores."""
 
     DEFAULT_WEIGHTS = {
         "supply_constraint": 0.30,
@@ -31,56 +25,35 @@ class ScoringEngine:
 
     EXTREME_RISK_THRESHOLD = 0.85
 
+    # ------------------------------------------------------------------
+    # Composite and risk scoring
+    # ------------------------------------------------------------------
     def calculate_composite_score(
         self,
         component_scores: dict[str, float | None],
         weights: dict[str, float] | None = None,
     ) -> dict[str, Any]:
-        """
-        Calculate composite market score with weighted components.
-
-        Implements:
-        - Req: Weighted Composite Scoring
-        - Scenario: Default weighted score calculation
-        - Scenario: Custom weight configuration
-        - Scenario: Missing component handling
-
-        Args:
-            component_scores: Dict of component scores (0-100 or None if missing)
-            weights: Optional custom weights (default: 30/30/20/20)
-
-        Returns:
-            Dict with composite score, components, weights, metadata
-
-        Raises:
-            ValueError: If weights don't sum to 1.0 or all components missing
-        """
         if weights is None:
             weights = self.DEFAULT_WEIGHTS.copy()
 
-        # Validate weights sum to 1.0 (within tolerance)
         weight_sum = sum(weights.values())
         if abs(weight_sum - 1.0) > 0.01:
             raise ValueError(
-                f"Weights must sum to 1.0, got {weight_sum:.3f}. " f"Weights: {weights}"
+                f"Weights must sum to 1.0, got {weight_sum:.3f}. Weights: {weights}"
             )
 
-        # Filter to available components
         available = {k: v for k, v in component_scores.items() if v is not None}
         missing = [k for k, v in component_scores.items() if v is None]
-
         if not available:
             raise ValueError("At least one component score must be provided")
 
-        # Redistribute weights for missing components
-        available_weight_sum = sum(weights[k] for k in available if k in weights)
+        available_weight_sum = sum(weights.get(k, 0) for k in available)
         adjusted_weights = {
             k: weights.get(k, 0) / available_weight_sum
             for k in available
             if k in weights
         }
 
-        # Calculate weighted average
         composite_score = sum(available[k] * adjusted_weights[k] for k in available)
 
         return {
@@ -98,29 +71,17 @@ class ScoringEngine:
     def apply_risk_adjustment(
         self, market_score: float, risk_multiplier: float
     ) -> dict[str, Any]:
-        """
-        Apply risk multiplier to market score.
-
-        Implements:
-        - Req: Risk-Adjusted Scoring
-        - Scenario: Risk multiplier application
-        - Scenario: Extreme risk exclusion
-
-        Args:
-            market_score: Base market score (0-100)
-            risk_multiplier: Risk adjustment factor (0.9-1.1 typical)
-
-        Returns:
-            Dict with final score, risk adjustment details, and exclusion flags
-        """
         final_score = market_score * risk_multiplier
         points_change = final_score - market_score
-
-        # Check for extreme risk
         is_extreme_risk = risk_multiplier < self.EXTREME_RISK_THRESHOLD
-        flagged_non_fit = is_extreme_risk
 
-        result = {
+        if is_extreme_risk:
+            logger.warning(
+                "Market flagged as non-fit due to extreme risk multiplier %.2f",
+                risk_multiplier,
+            )
+
+        return {
             "final_score": round(final_score, 1),
             "market_score": round(market_score, 1),
             "risk_multiplier": risk_multiplier,
@@ -130,109 +91,51 @@ class ScoringEngine:
                 ),
                 "points_gained": round(points_change, 1) if points_change > 0 else 0.0,
             },
-            "flagged_non_fit": flagged_non_fit,
+            "flagged_non_fit": is_extreme_risk,
             "exclusion_reason": "extreme_risk" if is_extreme_risk else None,
         }
 
-        if flagged_non_fit:
-            logger.warning(
-                f"Market flagged as non-fit: risk_multiplier={risk_multiplier:.2f} "
-                f"(threshold={self.EXTREME_RISK_THRESHOLD})"
-            )
-
-        return result
-
+    # ------------------------------------------------------------------
+    # Normalization utilities
+    # ------------------------------------------------------------------
     def normalize_linear(
         self, value: float, min_val: float, max_val: float, inverse: bool = False
     ) -> float:
-        """
-        Normalize value to 0-100 using linear scaling.
-
-        Implements:
-        - Req: Normalization Functions
-        - Scenario: Linear normalization
-
-        Args:
-            value: Raw value to normalize
-            min_val: Minimum expected value
-            max_val: Maximum expected value
-            inverse: If True, reverse scale (lower is better)
-
-        Returns:
-            Normalized score 0-100
-        """
         if max_val == min_val:
-            return 50.0  # Return mid-point if range is zero
+            return 50.0
 
-        # Linear scaling to 0-1
         normalized = (value - min_val) / (max_val - min_val)
-
-        # Clamp to 0-1
         normalized = max(0.0, min(1.0, normalized))
-
-        # Apply inverse if specified
         if inverse:
             normalized = 1.0 - normalized
-
-        # Scale to 0-100
         return round(normalized * 100.0, 1)
 
     def normalize_percentile(
-        self, target_value: float, all_values: Sequence[float]
+        self, target_value: float, all_values: list[float]
     ) -> float:
-        """
-        Normalize value using percentile rank.
-
-        Implements:
-        - Req: Normalization Functions
-        - Scenario: Percentile-based normalization
-
-        Args:
-            target_value: Value to rank
-            all_values: List of all values for comparison
-
-        Returns:
-            Percentile score 0-100
-        """
         if not all_values:
             return 50.0
 
-        # Sort values
         sorted_values = sorted(all_values)
-
-        # Count values less than target
         count_below = sum(1 for v in sorted_values if v < target_value)
-
-        # Calculate percentile rank
         percentile = (count_below / len(sorted_values)) * 100.0
-
         return round(percentile, 1)
 
     def normalize_logarithmic(
         self, value: float, min_val: float, max_val: float, inverse: bool = False
     ) -> float:
-        """Apply logarithmic normalization for exponentially distributed metrics."""
+        safe_min = max(min_val, 1e-6)
+        safe_max = max(max_val, safe_min * 10)
+        clipped = max(min(value, safe_max), safe_min)
 
-        if value <= 0:
-            raise ValueError("Value must be positive for logarithmic normalization")
+        log_min = math.log10(safe_min)
+        log_max = math.log10(safe_max)
+        log_value = math.log10(clipped)
 
-        min_val = max(min_val, 1e-6)
-        max_val = max(max_val, min_val * 10)
-        value = max(value, min_val)
-
-        log_min = math.log(min_val)
-        log_max = math.log(max_val)
-        log_val = math.log(value)
-
-        if log_max == log_min:
-            return 50.0
-
-        normalized = (log_val - log_min) / (log_max - log_min)
+        normalized = (log_value - log_min) / (log_max - log_min)
         normalized = max(0.0, min(1.0, normalized))
-
         if inverse:
             normalized = 1.0 - normalized
-
         return round(normalized * 100.0, 1)
 
     def normalize_threshold(
@@ -242,72 +145,65 @@ class ScoringEngine:
         *,
         higher_is_better: bool = True,
     ) -> float:
-        """Apply threshold/step based scoring."""
-
         if not bands:
-            raise ValueError("At least one threshold band is required")
+            return 0.0
 
-        sorted_bands = sorted(bands, key=lambda b: b["threshold"])
+        sorted_bands = sorted(
+            bands, key=lambda b: b["threshold"], reverse=higher_is_better
+        )
+        selected_score = sorted_bands[-1]["score"]
 
-        if higher_is_better:
-            applicable = [band for band in sorted_bands if value >= band["threshold"]]
-            band = applicable[-1] if applicable else sorted_bands[0]
-        else:
-            applicable = [band for band in sorted_bands if value <= band["threshold"]]
-            band = applicable[0] if applicable else sorted_bands[-1]
+        for band in sorted_bands:
+            threshold = band["threshold"]
+            score = band["score"]
+            if higher_is_better and value >= threshold:
+                selected_score = score
+                break
+            if not higher_is_better and value <= threshold:
+                selected_score = score
+                break
+        return float(selected_score)
 
-        return float(band["score"])
-
+    # ------------------------------------------------------------------
+    # Ranking and sensitivity
+    # ------------------------------------------------------------------
     def rank_submarkets(
-        self,
-        submarkets: Sequence[Mapping[str, Any]],
-        *,
-        peer_window: float = 5.0,
-    ) -> List[Dict[str, Any]]:
-        """Rank submarkets and compute percentile/quartile/peer group metadata."""
-
+        self, submarkets: Sequence[Mapping[str, Any]]
+    ) -> list[dict[str, Any]]:
         if not submarkets:
             return []
 
-        def _tie_breaker(item: Mapping[str, Any]) -> tuple:
-            comps = item.get("component_scores", {})
-            supply = comps.get("supply_constraint", 0.0)
-            jobs = comps.get("innovation_employment", 0.0)
-            urban = comps.get("urban_convenience", 0.0)
-            outdoor = comps.get("outdoor_access", 0.0)
-            return (-item.get("final_score", 0.0), -supply, -jobs, -urban, -outdoor)
+        def sort_key(entry: Mapping[str, Any]) -> tuple[float, float, float]:
+            components = entry.get("component_scores", {})
+            return (
+                -entry.get("final_score", 0.0),
+                -components.get("supply_constraint", 0.0),
+                -components.get("innovation_employment", 0.0),
+            )
 
-        ordered = sorted(submarkets, key=_tie_breaker)
-        total = len(ordered)
-        results: List[Dict[str, Any]] = []
+        sorted_entries = sorted(submarkets, key=sort_key)
+        count = len(sorted_entries)
+        results: list[dict[str, Any]] = []
 
-        for idx, entry in enumerate(ordered, start=1):
-            final_score = float(entry.get("final_score", 0.0))
-            percentile = round(100.0 * (total - idx + 1) / total, 1)
-
-            if percentile > 75:
-                quartile = "Q1"
-            elif percentile > 50:
-                quartile = "Q2"
-            elif percentile > 25:
-                quartile = "Q3"
-            else:
-                quartile = "Q4"
-
+        for idx, entry in enumerate(sorted_entries):
+            rank = idx + 1
+            percentile = (
+                100.0 if count == 1 else round(100 - (idx / (count - 1)) * 100, 1)
+            )
             peers = [
-                item.get("submarket_id")
-                for item in ordered
-                if item is not entry
-                and abs(item.get("final_score", 0.0) - final_score) <= peer_window
+                other["submarket_id"]
+                for other in sorted_entries
+                if other is not entry
+                and other.get("final_score") == entry.get("final_score")
             ]
 
             results.append(
                 {
-                    "submarket_id": entry.get("submarket_id"),
-                    "rank": idx,
-                    "final_score": final_score,
+                    "submarket_id": entry["submarket_id"],
+                    "final_score": entry.get("final_score"),
+                    "rank": rank,
                     "percentile": percentile,
-                    "quartile": quartile,
+                    "component_scores": entry.get("component_scores", {}),
                     "peers": peers,
                 }
             )
@@ -316,40 +212,37 @@ class ScoringEngine:
 
     def run_weight_sensitivity(
         self,
-        component_scores: Mapping[str, float],
+        components: Mapping[str, float],
         scenarios: Sequence[Mapping[str, Any]],
-        *,
-        base_weights: Mapping[str, float] | None = None,
-    ) -> List[Dict[str, Any]]:
-        """Evaluate score sensitivity to weight adjustments."""
-
-        base = dict(base_weights or self.DEFAULT_WEIGHTS)
-        results: List[Dict[str, Any]] = []
+    ) -> list[dict[str, Any]]:
+        base_weights = self.DEFAULT_WEIGHTS.copy()
+        results = []
 
         for scenario in scenarios:
-            delta = scenario.get("delta", {})
-            weights = {**base}
-            for key, change in delta.items():
-                weights[key] = max(0.0, weights.get(key, 0.0) + change)
+            deltas = scenario.get("delta", {})
+            adjusted = base_weights.copy()
+            for key, delta in deltas.items():
+                adjusted[key] = adjusted.get(key, 0.0) + delta
 
-            total = sum(weights.values())
-            if total == 0:
+            total = sum(adjusted.values())
+            if total <= 0:
                 continue
-            weights = {k: v / total for k, v in weights.items()}
 
-            score_details = self.calculate_composite_score(
-                component_scores, weights=weights
-            )
+            normalized = {k: v / total for k, v in adjusted.items()}
+            composite = self.calculate_composite_score(dict(components), normalized)
             results.append(
                 {
-                    "scenario": scenario.get("name", "unnamed"),
-                    "weights": weights,
-                    "score": score_details["score"],
+                    "scenario": scenario.get("name", "variant"),
+                    "score": composite["score"],
+                    "weights": composite["weights"],
                 }
             )
 
         return results
 
+    # ------------------------------------------------------------------
+    # Visualization
+    # ------------------------------------------------------------------
     def create_component_radar_chart(
         self,
         *,
@@ -357,61 +250,57 @@ class ScoringEngine:
         component_scores: Mapping[str, float],
         benchmark_scores: Mapping[str, Mapping[str, float]] | None = None,
     ):
-        """Create radar chart comparing component scores."""
-
         labels = list(component_scores.keys())
         values = [component_scores[label] for label in labels]
-
         angles = np.linspace(0, 2 * np.pi, len(labels), endpoint=False).tolist()
-        values_cycle = values + [values[0]]
-        angles_cycle = angles + [angles[0]]
+        values += values[:1]
+        angles += angles[:1]
 
-        fig, ax = plt.subplots(subplot_kw={"polar": True})
-        ax.plot(angles_cycle, values_cycle, label=submarket_id, linewidth=2)
-        ax.fill(angles_cycle, values_cycle, alpha=0.1)
+        fig, ax = plt.subplots(subplot_kw={"projection": "polar"})
+        ax.plot(angles, values, label=submarket_id)
+        ax.fill(angles, values, alpha=0.25)
+        ax.set_xticks(np.linspace(0, 2 * np.pi, len(labels), endpoint=False))
+        ax.set_xticklabels(labels)
+        ax.set_ylim(0, 100)
+        ax.set_title(f"Component Scores – {submarket_id}")
 
         if benchmark_scores:
             for name, scores in benchmark_scores.items():
-                bench_values = [scores.get(label, 0.0) for label in labels]
-                bench_cycle = bench_values + [bench_values[0]]
-                ax.plot(angles_cycle, bench_cycle, linestyle="--", label=name)
+                bench_values = [scores.get(label, 0.0) for label in labels] + [
+                    scores.get(labels[0], 0.0)
+                ]
+                ax.plot(angles, bench_values, linestyle="--", label=name)
 
-        ax.set_xticks(angles)
-        ax.set_xticklabels(labels)
-        ax.set_yticklabels([])
-        ax.set_title(f"Component Radar – {submarket_id}")
-        ax.legend(loc="upper right", bbox_to_anchor=(1.3, 1.1))
-        ax.set_ylim(0, 100)
-
+        ax.legend(loc="upper right", bbox_to_anchor=(1.1, 1.1))
+        fig.tight_layout()
         return fig
 
     def create_comparison_heatmap(
-        self, submarkets: Sequence[Mapping[str, Any]]
+        self, submarkets: Sequence[Mapping[str, Mapping[str, float]]]
     ):
-        """Create heatmap figure for component comparisons."""
-
-        if not submarkets:
-            raise ValueError("At least one submarket required for heatmap")
-
-        df = pd.DataFrame(
-            {
-                item["submarket_id"]: item.get("component_scores", {})
-                for item in submarkets
-            }
+        components = sorted(
+            {key for entry in submarkets for key in entry["component_scores"]}
         )
+        labels = [entry["submarket_id"] for entry in submarkets]
+        matrix = [
+            [entry["component_scores"].get(component, 0.0) for component in components]
+            for entry in submarkets
+        ]
 
-        df = df.reindex(sorted(df.index), axis=0)
-        fig, ax = plt.subplots(figsize=(max(6, len(submarkets) * 1.5), 4))
-        im = ax.imshow(df.values, aspect="auto", cmap="viridis", vmin=0, vmax=100)
-        ax.set_xticks(np.arange(df.shape[1]))
-        ax.set_xticklabels(df.columns)
-        ax.set_yticks(np.arange(df.shape[0]))
-        ax.set_yticklabels(df.index)
-        ax.set_title("Component Comparison Heatmap")
-        plt.colorbar(im, ax=ax, fraction=0.046, pad=0.04, label="Score")
-
+        data = np.array(matrix)
+        fig, ax = plt.subplots()
+        im = ax.imshow(data, cmap="YlGnBu", vmin=0, vmax=100)
+        ax.set_xticks(np.arange(len(components)))
+        ax.set_xticklabels(components, rotation=45, ha="right")
+        ax.set_yticks(np.arange(len(labels)))
+        ax.set_yticklabels(labels)
+        fig.colorbar(im, ax=ax, label="Score")
+        fig.tight_layout()
         return fig
 
+    # ------------------------------------------------------------------
+    # Non-fit filtering and confidence scoring
+    # ------------------------------------------------------------------
     def apply_non_fit_filters(
         self,
         *,
@@ -419,44 +308,36 @@ class ScoringEngine:
         risk_flags: Mapping[str, Any],
         risk_multiplier: float,
         insurance_override: bool,
-    ) -> Dict[str, Any]:
-        """Evaluate non-fit rules and return exclusion metadata."""
+    ) -> dict[str, Any]:
+        reasons: list[str] = []
+        supply = component_scores.get("supply_constraint", 0)
+        urban = component_scores.get("urban_convenience", 0)
+        transit = component_scores.get(
+            "transit", component_scores.get("urban_convenience", 0)
+        )
+        outdoor = component_scores.get("outdoor_access", 0)
 
-        reasons: List[str] = []
-        supply = component_scores.get("supply_constraint", 0.0)
-        urban = component_scores.get("urban_convenience", 0.0)
-        transit = component_scores.get("transit", component_scores.get("transit_access", 0.0))
-        outdoor = component_scores.get("outdoor_access", 0.0)
-
-        if supply < 40 and urban < 40:
+        if supply < 40 and urban < 35:
             reasons.append("commodity_sprawl")
-
-        if transit < 20 and urban < 30 and outdoor < 40:
+        if transit < 25 and outdoor < 45:
             reasons.append("auto_only_desert")
-
+        if risk_flags.get("hard_rent_control"):
+            reasons.append("hard_rent_control")
+        if (
+            risk_flags.get("wildfire_score", 0) >= 90
+            or risk_flags.get("flood_score", 0) >= 85
+        ):
+            reasons.append("chronic_hazard")
         if risk_multiplier < self.EXTREME_RISK_THRESHOLD:
             reasons.append("extreme_risk")
 
-        if risk_flags.get("hard_rent_control"):
-            reasons.append("hard_rent_control")
-
-        wildfire_score = risk_flags.get("wildfire_score", 0)
-        flood_score = risk_flags.get("flood_score", 0)
-        if wildfire_score > 90 and flood_score > 80:
-            reasons.append("chronic_hazard")
-
-        requires_override = any(
-            reason in {"hard_rent_control", "chronic_hazard", "extreme_risk"}
-            for reason in reasons
-        )
-
-        if "chronic_hazard" in reasons and insurance_override:
-            reasons.remove("chronic_hazard")
+        flagged = bool(reasons)
+        requires_override = flagged and not insurance_override
 
         return {
-            "flagged": bool(reasons),
+            "flagged": flagged,
             "reasons": reasons,
-            "requires_override": requires_override and bool(reasons),
+            "requires_override": requires_override,
         }
 
     def calculate_completeness_factor(
@@ -464,71 +345,58 @@ class ScoringEngine:
         *,
         available_metrics: Mapping[str, bool],
         critical_metrics: Iterable[str],
-    ) -> Dict[str, Any]:
-        """Calculate completeness factor and capture missing critical metrics."""
-
+    ) -> dict[str, Any]:
         total = len(available_metrics)
-        if total == 0:
-            return {"factor": 100.0, "missing": [], "missing_critical": []}
+        available_count = sum(1 for value in available_metrics.values() if value)
+        missing = [key for key, value in available_metrics.items() if not value]
+        critical_missing = [
+            metric
+            for metric in critical_metrics
+            if not available_metrics.get(metric, False)
+        ]
 
-        available_count = sum(1 for v in available_metrics.values() if v)
-        pct_complete = (available_count / total) * 100.0
-        factor = min(100.0, pct_complete * 1.2)
-
-        missing = [k for k, v in available_metrics.items() if not v]
-        critical_missing = [m for m in critical_metrics if not available_metrics.get(m, False)]
-
+        base_factor = (available_count / total * 100) if total else 100.0
         if critical_missing:
-            factor = max(0.0, factor - 15 * len(critical_missing))
+            base_factor *= 0.7
+
+        return {
+            "factor": round(base_factor, 1),
+            "missing": missing,
+            "missing_critical": bool(critical_missing),
+            "critical_missing_list": critical_missing,
+        }
+
+    def calculate_freshness_factor(
+        self, metric_ages_months: Mapping[str, int]
+    ) -> dict[str, Any]:
+        if not metric_ages_months:
+            return {"factor": 100.0, "max_age": 0, "stale_metrics": []}
+
+        ages = list(metric_ages_months.values())
+        average_age = sum(ages) / len(ages)
+        max_age = max(ages)
+        factor = max(10.0, 100.0 - average_age * 3)
+        stale = [metric for metric, age in metric_ages_months.items() if age > 12]
 
         return {
             "factor": round(factor, 1),
-            "missing": missing,
-            "missing_critical": critical_missing,
+            "max_age": max_age,
+            "stale_metrics": stale,
         }
 
-    def calculate_freshness_factor(self, data_ages_months: Mapping[str, float]) -> Dict[str, Any]:
-        """Calculate freshness factor with penalties for stale data."""
+    def calculate_method_factor(
+        self, metric_methods: Mapping[str, str]
+    ) -> dict[str, Any]:
+        method_weights = {"direct": 1.0, "proxy": 0.85, "estimate": 0.7}
+        weights = [
+            method_weights.get(method, 0.6) for method in metric_methods.values()
+        ]
+        factor = (sum(weights) / len(weights) * 100) if weights else 100.0
 
-        if not data_ages_months:
-            return {"factor": 100.0, "stale_sources": []}
-
-        scores = []
-        stale = []
-        for source, age in data_ages_months.items():
-            if age <= 12:
-                scores.append(100.0)
-            else:
-                stale.append(source)
-                decay = (age - 12) * 5
-                scores.append(max(30.0, 100.0 - decay))
-
-        factor = round(sum(scores) / len(scores), 1)
-        return {"factor": factor, "stale_sources": stale}
-
-    def calculate_method_factor(self, methods: Mapping[str, str]) -> Dict[str, Any]:
-        """Calculate method uncertainty factor based on data provenance."""
-
-        penalties = {
-            "direct": 0,
-            "primary": 0,
-            "hybrid": 10,
-            "proxy": 20,
-            "estimate": 30,
+        return {
+            "factor": round(factor, 1),
+            "methods": metric_methods,
         }
-
-        if not methods:
-            return {"factor": 100.0, "penalties": {}}
-
-        scores = []
-        applied = {}
-        for metric, method in methods.items():
-            penalty = penalties.get(method, 25)
-            applied[metric] = penalty
-            scores.append(max(0.0, 100.0 - penalty))
-
-        factor = round(sum(scores) / len(scores), 1)
-        return {"factor": factor, "penalties": applied}
 
     def calculate_confidence_score(
         self,
@@ -536,72 +404,68 @@ class ScoringEngine:
         completeness_factor: float,
         freshness_factor: float,
         method_factor: float,
-        missing_critical: Iterable[str],
-    ) -> Dict[str, Any]:
-        """Combine factors into overall confidence score."""
-
+        missing_critical: bool,
+    ) -> dict[str, Any]:
         confidence = (
-            0.5 * completeness_factor
-            + 0.3 * freshness_factor
-            + 0.2 * method_factor
+            completeness_factor * 0.5 + freshness_factor * 0.3 + method_factor * 0.2
         )
-
         if missing_critical:
-            confidence = max(0.0, confidence - 5 * len(list(missing_critical)))
+            confidence *= 0.85
 
-        confidence = round(min(100.0, max(0.0, confidence)), 1)
+        flagged_low = confidence < 60
         return {
-            "confidence": confidence,
-            "flagged_low_confidence": confidence < 70.0,
+            "confidence": round(confidence, 1),
+            "flagged_low_confidence": flagged_low,
             "diagnostics": {
-                "completeness": completeness_factor,
-                "freshness": freshness_factor,
-                "method": method_factor,
-                "missing_critical": list(missing_critical),
+                "completeness_factor": completeness_factor,
+                "freshness_factor": freshness_factor,
+                "method_factor": method_factor,
+                "missing_critical": missing_critical,
             },
         }
 
+    # ------------------------------------------------------------------
+    # Validation reporting
+    # ------------------------------------------------------------------
     def generate_validation_report(
         self,
-        current_results: Sequence[Mapping[str, Any]],
-        reference_results: Mapping[str, Mapping[str, Any]],
+        current_scores: Sequence[Mapping[str, Any]],
+        reference_scores: Mapping[str, Mapping[str, Any]],
     ) -> pd.DataFrame:
-        """Generate validation report comparing current vs reference scores."""
+        current_df = pd.DataFrame(current_scores)
+        reference_df = (
+            pd.DataFrame.from_dict(reference_scores, orient="index")
+            .rename_axis("submarket_id")
+            .reset_index()
+        )
 
-        records = []
-        for entry in current_results:
-            submarket_id = entry.get("submarket_id")
-            current_score = float(entry.get("final_score", 0.0))
-            current_rank = int(entry.get("rank", 0))
+        merged = current_df.merge(
+            reference_df,
+            on="submarket_id",
+            how="left",
+            suffixes=("", "_ref"),
+        )
+        merged["score_delta"] = merged["final_score"] - merged["score"]
+        merged["rank_delta"] = merged["rank"] - merged["rank_ref"]
+        return merged
 
-            reference = reference_results.get(submarket_id, {})
-            reference_score = reference.get("score")
-            reference_rank = reference.get("rank")
+    # ------------------------------------------------------------------
+    # Derived methods for convenience
+    # ------------------------------------------------------------------
+    def estimate_flood_insurance(
+        self,
+        *,
+        flood_data: Mapping[str, Any],
+        building_elevation: float | None,
+        replacement_cost: float,
+    ) -> Mapping[str, Any]:
+        """Proxy through to FEMA analyzer when embedded in workflows."""
 
-            score_delta = (
-                None
-                if reference_score is None
-                else round(current_score - float(reference_score), 1)
-            )
-            rank_delta = (
-                None
-                if reference_rank is None
-                else int(current_rank - int(reference_rank))
-            )
+        from Claude45_Demo.risk_assessment.fema_flood import FEMAFloodAnalyzer
 
-            records.append(
-                {
-                    "submarket_id": submarket_id,
-                    "final_score": current_score,
-                    "rank": current_rank,
-                    "reference_score": reference_score,
-                    "reference_rank": reference_rank,
-                    "score_delta": score_delta,
-                    "rank_delta": rank_delta,
-                    "large_rank_delta": abs(rank_delta) >= 10 if rank_delta is not None else False,
-                }
-            )
-
-        df = pd.DataFrame(records)
-        df.sort_values(by="final_score", ascending=False, inplace=True)
-        return df.reset_index(drop=True)
+        analyzer = FEMAFloodAnalyzer()
+        return analyzer.estimate_flood_insurance(
+            flood_data=flood_data,
+            building_elevation=building_elevation,
+            replacement_cost=replacement_cost,
+        )

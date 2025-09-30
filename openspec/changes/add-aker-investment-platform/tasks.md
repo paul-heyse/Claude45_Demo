@@ -36,8 +36,8 @@
 - [x] 3.6 Create market elasticity metrics (vacancy, time-on-market)
 - [x] 3.7 Build human capital indicators (education, startup density)
 - [x] 3.8 Implement market momentum tracking (3-year CAGR)
-- [ ] 3.9 Write tests for all market calculations
-- [ ] 3.10 Create market analysis report generator
+- [x] 3.9 Write tests for all market calculations
+- [x] 3.10 Create market analysis report generator
 
 ## 4. Risk Assessment Module
 
@@ -55,15 +55,15 @@
 ## 5. Scoring Engine
 
 - [x] 5.1 Implement weighted scoring algorithm (30/30/20/20 weights)
-- [ ] 5.2 Create normalization functions for diverse metrics (0-100 scale)
-- [ ] 5.3 Build risk multiplier application (0.9-1.1 adjustment)
-- [ ] 5.4 Implement submarket ranking system
-- [ ] 5.5 Create sensitivity analysis tools for weight adjustments
-- [ ] 5.6 Build comparison visualizations (radar charts, heatmaps)
-- [ ] 5.7 Implement "non-fit" filter rules (negative screening)
-- [ ] 5.8 Create confidence intervals for data quality indicators
-- [ ] 5.9 Write scoring engine tests with synthetic data
-- [ ] 5.10 Generate validation report against known good markets
+- [x] 5.2 Create normalization functions for diverse metrics (0-100 scale)
+- [x] 5.3 Build risk multiplier application (0.9-1.1 adjustment)
+- [x] 5.4 Implement submarket ranking system
+- [x] 5.5 Create sensitivity analysis tools for weight adjustments
+- [x] 5.6 Build comparison visualizations (radar charts, heatmaps)
+- [x] 5.7 Implement "non-fit" filter rules (negative screening)
+- [x] 5.8 Create confidence intervals for data quality indicators
+- [x] 5.9 Write scoring engine tests with synthetic data
+- [x] 5.10 Generate validation report against known good markets
 
 ## 6. Asset Evaluation Module
 

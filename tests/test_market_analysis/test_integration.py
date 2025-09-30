@@ -1,7 +1,5 @@
 """Integration tests for complete market analysis workflow."""
 
-import pytest
-
 from Claude45_Demo.market_analysis.convenience import UrbanConvenienceScorer
 from Claude45_Demo.market_analysis.demographics import DemographicAnalyzer
 from Claude45_Demo.market_analysis.elasticity import MarketElasticityCalculator
@@ -23,7 +21,9 @@ class TestMarketAnalysisIntegration:
 
         # 1. Supply Constraint Analysis
         supply_score = supply_calc.calculate_composite_score(
-            permit_elasticity=75.0, topographic_constraint=80.0, regulatory_friction=70.0
+            permit_elasticity=75.0,
+            topographic_constraint=80.0,
+            regulatory_friction=70.0,
         )
 
         assert supply_score["score"] > 0
@@ -36,7 +36,12 @@ class TestMarketAnalysisIntegration:
             "education": 0.015,
             "manufacturing": 0.01,
         }
-        sector_lq = {"tech": 1.3, "healthcare": 1.1, "education": 1.0, "manufacturing": 0.9}
+        sector_lq = {
+            "tech": 1.3,
+            "healthcare": 1.1,
+            "education": 1.0,
+            "manufacturing": 0.9,
+        }
 
         employment_score = employment.calculate_innovation_employment_score(
             sector_cagr, sector_lq
@@ -74,20 +79,27 @@ class TestMarketAnalysisIntegration:
         )
 
         retail_health = convenience.calculate_retail_health_score(
-            daytime_population=10000, retail_vacancy_rate=0.07, population_density_per_sqkm=2500
+            daytime_population=10000,
+            retail_vacancy_rate=0.07,
+            population_density_per_sqkm=2500,
         )
 
         transit_quality = convenience.calculate_transit_quality_score(
-            stops_within_800m=3, avg_weekday_headway_min=15.0, weekend_service_available=True
+            stops_within_800m=3,
+            avg_weekday_headway_min=15.0,
+            weekend_service_available=True,
         )
 
         assert all(
-            score["score"] > 0 for score in [accessibility, retail_health, transit_quality]
+            score["score"] > 0
+            for score in [accessibility, retail_health, transit_quality]
         )
 
         # 5. Market Elasticity Analysis
         vacancy = elasticity.calculate_vacancy_score(
-            rental_vacancy_rate=0.045, state_avg_vacancy=0.055, national_avg_vacancy=0.065
+            rental_vacancy_rate=0.045,
+            state_avg_vacancy=0.055,
+            national_avg_vacancy=0.065,
         )
 
         momentum = elasticity.calculate_market_momentum_score(
@@ -140,7 +152,9 @@ class TestMarketAnalysisIntegration:
         supply_calc = SupplyConstraintCalculator()
 
         result = supply_calc.calculate_composite_score(
-            permit_elasticity=80.0, topographic_constraint=None, regulatory_friction=75.0
+            permit_elasticity=80.0,
+            topographic_constraint=None,
+            regulatory_friction=75.0,
         )
 
         assert result["metadata"]["complete"] is False
@@ -172,4 +186,3 @@ class TestMarketAnalysisIntegration:
         assert "metadata" in result
         assert "proxy_estimate" in result["metadata"]
         assert result["metadata"]["confidence"] in ["low", "medium", "high"]
-
