@@ -17,7 +17,7 @@
 
 - [x] 2.1 Implement OpenStreetMap Overpass API connector for POI data
 - [ ] 2.2 Implement GTFS/Transitland connector for transit analysis
- - [x] 2.2 Implement GTFS/Transitland connector for transit analysis
+- [x] 2.2 Implement GTFS/Transitland connector for transit analysis
 - [ ] 2.3 Build isochrone calculator using OSRM or OpenRouteService
 - [ ] 2.4 Create 15-minute walkability scoring algorithm
 - [ ] 2.5 Implement USGS 3DEP elevation/slope analysis
@@ -42,7 +42,7 @@
 
 ## 4. Risk Assessment Module
 
-- [ ] 4.1 Implement FEMA flood zone analysis (NFHL WMS/WFS)
+- [x] 4.1 Implement FEMA flood zone analysis (NFHL WMS/WFS)
 - [ ] 4.2 Build wildfire risk calculator using USFS WHP and LANDFIRE
 - [ ] 4.3 Create air quality analyzer (EPA AQS, NOAA smoke days)
 - [ ] 4.4 Implement hazard overlay system (seismic, hail, radon)
