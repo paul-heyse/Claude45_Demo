@@ -5,7 +5,7 @@ from __future__ import annotations
 import logging
 import time
 from abc import ABC, abstractmethod
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from typing import TYPE_CHECKING, Any, Callable, Mapping, MutableMapping, Sequence
 
 import requests
@@ -39,8 +39,6 @@ class APIConnector(ABC):
         cache_manager: "CacheManager" | None = None,
     ) -> None:
         self.api_key = api_key or self._load_api_key()
-        if not self.api_key:
-            raise ConfigurationError("API key is required for connector initialization")
 
         self.base_url = base_url.rstrip("/")
         self.cache_ttl = timedelta(days=cache_ttl_days)
@@ -52,7 +50,7 @@ class APIConnector(ABC):
             self.cache = CacheManager()
 
         self._request_count = 0
-        self._last_request_time = datetime.utcnow() - timedelta(days=1)
+        self._last_request_time = datetime.now(timezone.utc)
 
     # ------------------------------------------------------------------
     # Abstract surface
@@ -129,7 +127,7 @@ class APIConnector(ABC):
 
     def _check_rate_limit(self) -> None:
         """Track request volume and raise when limit exceeded."""
-        now = datetime.utcnow()
+        now = datetime.now(timezone.utc)
         if now.date() != self._last_request_time.date():
             self._request_count = 0
 
@@ -147,7 +145,7 @@ class APIConnector(ABC):
 
     def _track_request(self) -> None:
         """Increment request counter without performing limit checks."""
-        now = datetime.utcnow()
+        now = datetime.now(timezone.utc)
         if now.date() != self._last_request_time.date():
             self._request_count = 0
         self._request_count += 1

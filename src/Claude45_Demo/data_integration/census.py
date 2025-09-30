@@ -46,6 +46,16 @@ class CensusConnector(APIConnector):
             cache_manager=cache_manager,
         )
 
+    def fetch(self, params: Dict[str, Any]) -> Any:  # pragma: no cover - generic usage
+        """Generic fetch hook for interface completeness."""
+        raise NotImplementedError(
+            "Use specialized methods like fetch_acs_demographics instead."
+        )
+
+    def parse(self, response: Any) -> Any:  # pragma: no cover - generic usage
+        """Return raw response; scenario-specific parsers handle conversion."""
+        return response
+
     # ------------------------------------------------------------------
     # ACS Demographics
     # ------------------------------------------------------------------
