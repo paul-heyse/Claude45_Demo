@@ -17,6 +17,7 @@
 
 - [x] 2.1 Implement OpenStreetMap Overpass API connector for POI data
 - [ ] 2.2 Implement GTFS/Transitland connector for transit analysis
+ - [x] 2.2 Implement GTFS/Transitland connector for transit analysis
 - [ ] 2.3 Build isochrone calculator using OSRM or OpenRouteService
 - [ ] 2.4 Create 15-minute walkability scoring algorithm
 - [ ] 2.5 Implement USGS 3DEP elevation/slope analysis
@@ -28,7 +29,7 @@
 
 ## 3. Market Analysis Module
 
-- [ ] 3.1 Build supply constraint calculator (permits per 1k households)
+- [x] 3.1 Build supply constraint calculator (permits per 1k households)
 - [ ] 3.2 Implement job mix analyzer with Location Quotient (LQ) calculations
 - [ ] 3.3 Create innovation employment scoring (tech, healthcare, education)
 - [ ] 3.4 Build demographic trend analyzer (population, income, migration)
