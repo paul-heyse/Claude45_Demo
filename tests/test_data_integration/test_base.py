@@ -14,7 +14,9 @@ import pytest
 class MockConnector:
     """Mock connector for testing abstract base class."""
 
-    def __init__(self, api_key: str = "test_key", base_url: str = "https://api.example.com"):
+    def __init__(
+        self, api_key: str = "test_key", base_url: str = "https://api.example.com"
+    ):
         from Claude45_Demo.data_integration.base import APIConnector
 
         # Create a concrete implementation for testing
@@ -102,7 +104,9 @@ class TestErrorHandlingWithRetry:
 
         # Test retry with backoff
         start_time = time.time()
-        result = connector._retry_with_backoff(failing_func, max_retries=5, initial_delay=0.1)
+        result = connector._retry_with_backoff(
+            failing_func, max_retries=5, initial_delay=0.1
+        )
         elapsed = time.time() - start_time
 
         assert result == {"success": True}
@@ -129,7 +133,9 @@ class TestErrorHandlingWithRetry:
 
         # Should raise DataSourceError after exhausting retries
         with pytest.raises(DataSourceError):
-            connector._retry_with_backoff(always_fails, max_retries=3, initial_delay=0.01)
+            connector._retry_with_backoff(
+                always_fails, max_retries=3, initial_delay=0.01
+            )
 
 
 class TestRateLimiting:

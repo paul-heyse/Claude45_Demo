@@ -23,6 +23,12 @@ class ValidationError(AkerPlatformError):
     pass
 
 
+class DataValidationError(ValidationError):
+    """Data validation failed (alias for compatibility)."""
+
+    pass
+
+
 class ScoringError(AkerPlatformError):
     """Error calculating scores."""
 

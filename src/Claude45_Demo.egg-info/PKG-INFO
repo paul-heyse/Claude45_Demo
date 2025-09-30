@@ -1,3 +1,48 @@
+Metadata-Version: 2.4
+Name: Claude45_Demo
+Version: 0.1.0
+Summary: Aker Investment Platform - Data-driven residential real estate investment screening for CO/UT/ID markets
+Author-email: Aker Companies <tech@akercompanies.com>
+Keywords: real estate,investment,geospatial,market analysis,risk assessment
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Financial and Insurance Industry
+Classifier: Topic :: Office/Business :: Financial :: Investment
+Classifier: Programming Language :: Python :: 3.12
+Requires-Python: >=3.12
+Description-Content-Type: text/markdown
+Requires-Dist: pandas
+Requires-Dist: numpy
+Requires-Dist: geopandas
+Requires-Dist: shapely
+Requires-Dist: pyproj
+Requires-Dist: requests
+Requires-Dist: urllib3
+Requires-Dist: scikit-learn
+Requires-Dist: scipy
+Requires-Dist: matplotlib
+Requires-Dist: seaborn
+Requires-Dist: click
+Requires-Dist: python-dotenv
+Requires-Dist: pyyaml
+Requires-Dist: pydantic
+Provides-Extra: dev
+Requires-Dist: pytest; extra == "dev"
+Requires-Dist: pytest-cov; extra == "dev"
+Requires-Dist: pytest-asyncio; extra == "dev"
+Requires-Dist: pytest-mock; extra == "dev"
+Requires-Dist: ruff; extra == "dev"
+Requires-Dist: black; extra == "dev"
+Requires-Dist: mypy; extra == "dev"
+Requires-Dist: pandas-stubs; extra == "dev"
+Requires-Dist: types-requests; extra == "dev"
+Requires-Dist: types-pyyaml; extra == "dev"
+Provides-Extra: notebook
+Requires-Dist: jupyter; extra == "notebook"
+Requires-Dist: ipykernel; extra == "notebook"
+Requires-Dist: ipywidgets; extra == "notebook"
+Provides-Extra: all
+Requires-Dist: Claude45_Demo[dev,notebook]; extra == "all"
+
 # Aker Investment Platform
 
 Data-driven screening and evaluation of residential real estate investments in Colorado, Utah, and Idaho.

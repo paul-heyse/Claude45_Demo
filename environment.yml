@@ -4,6 +4,14 @@ channels:
 dependencies:
   - python=3.12
   - pip
+  # Core analytics stack
+  - numpy
+  - pandas
+  - geopandas
+  - shapely
+  - requests
+  - scikit-learn
+  - python-dotenv
   - ruff
   - black
   - mypy
@@ -11,5 +19,3 @@ dependencies:
   - pytest-cov
   - ipykernel
   - pre-commit
-  - pip:
-      - python-dotenv

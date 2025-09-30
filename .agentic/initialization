@@ -1,0 +1,564 @@
+# AI Agent Initialization Instructions
+
+## Objective
+
+Initialize AI coding assistants with the necessary context, guidelines, and workflow to effectively contribute to the Aker Investment Platform development using specification-driven, test-driven methodologies.
+
+---
+
+## Quick Start: First-Time Initialization Prompt
+
+**Use this prompt when starting an AI agent for the first time on this project:**
+
+```
+I'm starting development on the Aker Investment Platform, a data-driven
+real estate investment analysis system for CO/UT/ID markets.
+
+PROJECT SETUP:
+- Spec-driven development using OpenSpec
+- Agentic context in .agentic/ directory
+- 6 capability modules to build
+- 100 implementation tasks over 8-11 weeks
+
+INITIALIZATION SEQUENCE:
+
+Step 1 - Read Project Overview:
+→ Read: .agentic/README.md (overview of all agentic resources)
+
+Step 2 - Understand Patterns and Conventions:
+→ Read: .agentic/CONTEXT.md (project structure, coding patterns, conventions)
+  Key sections:
+  - Module Structure Pattern
+  - Coding Patterns (data classes, base classes, score calculation)
+  - Test Patterns (fixtures, mocks)
+  - Common Commands
+
+Step 3 - Learn the Development Process:
+→ Read: .agentic/WORKFLOW.md (TDD workflow from spec to commit)
+  Key sections:
+  - Pre-Development Checklist
+  - Test-Driven Development cycle
+  - Quality Checks
+  - Git workflow
+
+Step 4 - Review Code Templates:
+→ Skim: .agentic/EXAMPLES.md (reference while coding)
+
+Step 5 - Understand Current State:
+→ Read: openspec/changes/add-aker-investment-platform/README.md (full proposal)
+→ Read: openspec/changes/add-aker-investment-platform/tasks.md (implementation tasks)
+
+DEVELOPMENT WORKFLOW:
+When ready to implement a task:
+
+1. SELECT TASK from tasks.md (start with 1.1)
+
+2. READ SPEC for that capability:
+   openspec/changes/add-aker-investment-platform/specs/<capability>/spec.md
+   - Each `### Requirement:` defines behavior
+   - Each `#### Scenario:` becomes a test case
+   - WHEN clauses = test setup
+   - THEN clauses = assertions
+
+3. CHECK PATTERNS in CONTEXT.md for similar code
+
+4. REFERENCE EXAMPLES.md for copy-paste templates
+
+5. WRITE TESTS FIRST (TDD):
+   - Create test file in tests/test_<capability>/
+   - Write failing test for first scenario
+   - Run: pytest tests/test_<capability>/test_<module>.py -v
+
+6. IMPLEMENT minimum code to pass test
+
+7. REFACTOR and add remaining scenarios
+
+8. RUN QUALITY CHECKS:
+   pytest -v && ruff check src && black src --check
+
+9. MARK COMPLETE in tasks.md:
+   Change `- [ ] 1.1 Task` to `- [x] 1.1 Task`
+
+10. COMMIT with conventional commit message:
+    git commit -m "feat(data): implement task 1.1"
+
+CODING STANDARDS:
+- Python 3.12+ with full type hints
+- Line length: 88 characters (black)
+- Imports: organized by ruff
+- Docstrings: Google style
+- Tests: pytest with fixtures
+- Coverage target: >80%
+
+I'm ready to start with task 1.1. Please confirm you've read:
+1. .agentic/README.md
+2. .agentic/CONTEXT.md
+3. .agentic/WORKFLOW.md
+
+Then let's begin implementing!
+```
+
+---
+
+## Condensed Initialization (After First Session)
+
+**For subsequent sessions or quick task starts:**
+
+```
+Resuming Aker Investment Platform development.
+
+CONTEXT:
+- Patterns: .agentic/CONTEXT.md
+- Workflow: .agentic/WORKFLOW.md (TDD process)
+- Examples: .agentic/EXAMPLES.md
+
+CURRENT TASK:
+Task [X.X] from: openspec/changes/add-aker-investment-platform/tasks.md
+
+SPEC:
+openspec/changes/add-aker-investment-platform/specs/<capability>/spec.md
+
+WORKFLOW:
+1. Read spec scenarios
+2. Write tests (WHEN/THEN → assertions)
+3. Implement following patterns
+4. Run: pytest && ruff check src && black src --check
+5. Mark complete in tasks.md
+
+Ready to proceed!
+```
+
+---
+
+## Minimal Task-Specific Initialization
+
+**For focused work on a single task:**
+
+```
+Task: 1.4 (Census API connector)
+Context: .agentic/CONTEXT.md
+Spec: openspec/changes/add-aker-investment-platform/specs/data-integration/spec.md#census
+Template: .agentic/EXAMPLES.md#api-connector-pattern
+Process: TDD (tests first) → implement → pytest && ruff && black
+```
+
+---
+
+## Priority Reading Order
+
+### Must Read First (Sequential)
+
+1. **`.agentic/README.md`** (5 minutes)
+   - Overview of agentic resources
+   - How documentation is organized
+   - Quick reference guide
+
+2. **`.agentic/CONTEXT.md`** (15 minutes)
+   - Project structure and module organization
+   - Coding patterns (data classes, connectors, scoring)
+   - Test patterns and fixtures
+   - Common commands and conventions
+
+3. **`.agentic/WORKFLOW.md`** (10 minutes)
+   - Pre-development checklist
+   - Test-Driven Development cycle
+   - Quality checks and git workflow
+   - Debugging strategies
+
+### Reference As Needed
+
+4. **`.agentic/EXAMPLES.md`**
+   - Copy-paste code templates
+   - API connector pattern
+   - Caching, scoring, geospatial examples
+
+5. **`.agentic/SCHEMAS.md`**
+   - Data model definitions
+   - JSON schemas for validation
+   - Type definitions
+
+### Project-Specific
+
+6. **`openspec/changes/add-aker-investment-platform/README.md`**
+   - Full proposal overview
+   - Success metrics
+   - Timeline
+
+7. **`openspec/changes/add-aker-investment-platform/tasks.md`**
+   - 100 implementation tasks
+   - Current progress
+
+8. **`openspec/changes/add-aker-investment-platform/specs/<capability>/spec.md`**
+   - Requirements for specific capability
+   - Scenarios that become tests
+
+---
+
+## Key Context for AI Agents
+
+### Project Purpose
+
+The Aker Investment Platform analyzes residential real estate markets in Colorado, Utah, and Idaho based on four pillars:
+
+- Supply Constraints (30%)
+- Innovation Employment (30%)
+- Urban Convenience (20%)
+- Outdoor Access (20%)
+
+Plus comprehensive risk assessment (wildfire, flood, regulatory, climate).
+
+### Technical Stack
+
+- **Language:** Python 3.12+ with full type hints
+- **Core:** pandas, numpy, geopandas, shapely
+- **Testing:** pytest, pytest-cov, pytest-mock
+- **Quality:** ruff (linting), black (formatting), mypy (type checking)
+- **Data:** 40+ API sources (Census, BLS, EPA, FEMA, USGS, etc.)
+- **Storage:** SQLite for caching
+
+### Architecture
+
+Six independent modules:
+
+1. **data-integration** - API connectors, caching, 40+ sources
+2. **market-analysis** - Supply, employment, demographic scoring
+3. **geo-analysis** - Geospatial operations, outdoor access
+4. **risk-assessment** - Wildfire, flood, regulatory risk
+5. **scoring-engine** - Weighted scoring, ranking, visualization
+6. **asset-evaluation** - Property filtering, ROI estimation
+
+### Development Model
+
+- **Spec-driven:** OpenSpec requirements define behavior
+- **Test-driven:** Write tests first based on spec scenarios
+- **Type-driven:** Full type hints for IDE support
+- **Quality-driven:** Automated checks before commit
+
+---
+
+## Critical Constraints
+
+### Code Quality Gates
+
+Before any commit, ALL must pass:
+
+```bash
+pytest -v                    # All tests pass
+ruff check src tests         # No linting errors
+black src tests --check      # Code formatted
+```
+
+### Development Rules
+
+1. **Specs are truth** - Implement exactly what scenarios describe
+2. **Tests first** - Red-Green-Refactor TDD cycle
+3. **Small functions** - <50 lines, single responsibility
+4. **Type everything** - Enable autocomplete and static analysis
+5. **Normalize scores** - All scoring functions return 0-100
+6. **Cache aggressively** - Respect API rate limits
+7. **Document assumptions** - Especially proxies/estimates
+
+### File Organization
+
+```
+src/Claude45_Demo/
+  <capability>/              # e.g., data_integration/
+    __init__.py
+    base.py                  # Abstract base classes
+    <module>.py              # Concrete implementations
+
+tests/
+  test_<capability>/
+    conftest.py              # Fixtures
+    test_<module>.py         # Tests matching spec scenarios
+```
+
+---
+
+## Development Workflow (Detailed)
+
+### Phase 1: Understand Requirement
+
+1. Locate task in `openspec/changes/add-aker-investment-platform/tasks.md`
+2. Read corresponding spec section
+3. Identify all scenarios (these become tests)
+4. Check design decisions in `design.md` if needed
+
+### Phase 2: Write Tests First (TDD)
+
+1. Create test file: `tests/test_<capability>/test_<module>.py`
+2. For each scenario in spec:
+   - WHEN clause → test setup
+   - THEN clause → assertions
+3. Run test: `pytest tests/test_<capability>/test_<module>.py -v`
+4. Confirm it fails (Red)
+
+### Phase 3: Implement Minimum Viable
+
+1. Create module: `src/Claude45_Demo/<capability>/<module>.py`
+2. Implement just enough to pass first test
+3. Run test: `pytest tests/test_<capability>/test_<module>.py -v`
+4. Confirm it passes (Green)
+
+### Phase 4: Iterate on Scenarios
+
+For each remaining scenario:
+
+1. Write test
+2. Run (expect fail)
+3. Implement
+4. Run (expect pass)
+5. Refactor if needed
+
+### Phase 5: Quality Checks
+
+```bash
+# Run all checks
+pytest -v --cov=src --cov-report=term-missing
+ruff check src tests
+black src tests --check
+mypy src/  # Optional for now
+```
+
+### Phase 6: Mark Complete and Commit
+
+1. Update `tasks.md`: `- [ ]` → `- [x]`
+2. Stage files: `git add src/... tests/...`
+3. Commit: `git commit -m "feat(data): implement census connector"`
+
+---
+
+## Success Indicators
+
+After initialization, the AI agent should be able to:
+
+✅ Navigate to the correct spec file for any task
+✅ Write tests that directly map to spec scenarios
+✅ Generate code following project patterns (from CONTEXT.md)
+✅ Use appropriate templates from EXAMPLES.md
+✅ Run quality checks automatically
+✅ Commit with proper conventional commit format
+✅ Explain design decisions referencing design.md
+
+---
+
+## Common Patterns Reference
+
+### Pattern: API Connector
+
+- Inherit from `APIConnector` base class
+- Implement `fetch()` and `parse()` methods
+- Add caching via `CacheManager`
+- Include rate limiting and retry logic
+- See: `.agentic/EXAMPLES.md#api-connector-pattern`
+
+### Pattern: Score Calculation
+
+- All scores normalized to 0-100
+- Use functions from `scoring_engine/normalization.py`
+- Include component breakdown for drill-down
+- Document formula in docstring
+- See: `.agentic/EXAMPLES.md#score-calculation`
+
+### Pattern: Geospatial Operations
+
+- Use GeoPandas for vector operations
+- Use Shapely for geometry manipulation
+- Transform to UTM for accurate distance calculations
+- Always specify CRS (WGS84 for input/output)
+- See: `.agentic/EXAMPLES.md#geospatial-operations`
+
+### Pattern: Test Fixtures
+
+- Create fixtures in `tests/conftest.py`
+- Mock API responses in `tests/fixtures/`
+- Use `pytest.mark.integration` for API calls
+- Use `pytest.mark.unit` for fast tests
+- See: `.agentic/EXAMPLES.md#test-fixtures`
+
+---
+
+## Troubleshooting Initialization
+
+### If AI agent seems confused
+
+**Provide explicit context:**
+
+```
+Please read these files in order before proceeding:
+1. .agentic/CONTEXT.md (patterns and conventions)
+2. .agentic/WORKFLOW.md (development process)
+3. openspec/changes/add-aker-investment-platform/specs/<capability>/spec.md
+
+Then implement task X.X following the patterns in CONTEXT.md.
+```
+
+### If generated code doesn't match patterns
+
+**Remind of pattern source:**
+
+```
+Please review the coding patterns in .agentic/CONTEXT.md, specifically:
+- Module Structure Pattern (lines 50-80)
+- Abstract Base Connectors (lines 100-150)
+
+Then regenerate following these patterns.
+```
+
+### If tests don't align with specs
+
+**Clarify spec-to-test mapping:**
+
+```
+Each `#### Scenario:` in the spec must become a test function.
+- Scenario name → test function name
+- WHEN clauses → test setup
+- THEN clauses → assert statements
+
+See .agentic/WORKFLOW.md "Phase 2: Write Tests First"
+```
+
+---
+
+## Environment Setup (Run First)
+
+Before initializing the AI agent, ensure environment is ready:
+
+```bash
+# 1. Run automated setup
+./scripts/dev_setup.sh
+
+# 2. Verify tools available
+python --version        # Should be 3.12+
+pytest --version
+ruff --version
+black --version
+openspec --version
+
+# 3. Validate OpenSpec
+openspec validate add-aker-investment-platform --strict
+
+# 4. Run basic tests
+pytest tests/test_basic.py -v
+```
+
+---
+
+## Communication Protocols
+
+### Request Format
+
+When asking AI agent to implement a task:
+
+```
+Task: [number and description]
+Spec: [path to spec file]
+Context: [relevant section in CONTEXT.md]
+Pattern: [relevant example in EXAMPLES.md]
+```
+
+### Response Format
+
+AI agent should provide:
+
+1. Confirmation of files read
+2. Test code (to be written first)
+3. Implementation code
+4. Quality check results
+5. Commit message suggestion
+
+### Feedback Loop
+
+- After each implementation, review against spec
+- Provide specific feedback referencing line numbers
+- AI agent adjusts based on patterns in CONTEXT.md
+
+---
+
+## Version Control Integration
+
+### Branch Naming
+
+```bash
+cx/<short-task-description>
+# Example: cx/census-api-connector
+```
+
+### Commit Message Format
+
+```
+<type>(<scope>): <subject>
+
+<optional body>
+
+Refs: openspec/.../spec.md
+Resolves: task X.X
+```
+
+**Types:** feat, fix, docs, test, refactor, style, chore
+
+---
+
+## Continuous Learning
+
+The AI agent should:
+
+1. **Learn from feedback** - Adjust patterns based on code reviews
+2. **Update context** - Suggest additions to .agentic/ files when patterns emerge
+3. **Improve estimates** - Track actual vs. estimated time per task
+4. **Document decisions** - Explain non-obvious choices in comments
+5. **Ask when uncertain** - Request clarification rather than guess
+
+---
+
+## Final Checklist
+
+Before considering AI agent initialized:
+
+- [ ] Agent has read `.agentic/README.md`
+- [ ] Agent has read `.agentic/CONTEXT.md`
+- [ ] Agent has read `.agentic/WORKFLOW.md`
+- [ ] Agent understands TDD workflow
+- [ ] Agent can locate specs for any task
+- [ ] Agent knows quality check commands
+- [ ] Agent understands commit format
+- [ ] Environment is set up and verified
+- [ ] Agent can reference EXAMPLES.md patterns
+- [ ] Agent knows when to ask for clarification
+
+---
+
+## Next Steps After Initialization
+
+**Immediate:**
+
+1. Confirm initialization: "I've read the context files and understand the workflow."
+2. Select first task: Task 1.1 from tasks.md
+3. Read relevant spec: `specs/data-integration/spec.md`
+4. Begin TDD cycle: Write tests → Implement → Quality checks
+
+**Ongoing:**
+
+- Mark tasks complete in tasks.md as you finish them
+- Commit frequently with conventional commit messages
+- Run quality checks before every commit
+- Reference .agentic/ files when patterns are unclear
+- Ask questions if spec is ambiguous
+
+---
+
+## Support Resources
+
+- **Patterns unclear?** → Check `.agentic/CONTEXT.md`
+- **Process unclear?** → Check `.agentic/WORKFLOW.md`
+- **Need code example?** → Check `.agentic/EXAMPLES.md`
+- **Data structure unclear?** → Check `.agentic/SCHEMAS.md`
+- **Requirement unclear?** → Check spec in `openspec/changes/.../specs/`
+- **Architecture unclear?** → Check `openspec/changes/.../design.md`
+
+---
+
+**Document Version:** 1.0.0
+**Created:** 2025-09-30
+**Purpose:** AI agent initialization for Aker Investment Platform
+**Status:** Active - Use for all new AI agent sessions

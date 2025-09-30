@@ -156,9 +156,10 @@ addopts = [
     "-q",
     "--strict-markers",
     "--strict-config",
-    "--cov=src/Claude45_Demo",
-    "--cov-report=term-missing",
-    "--cov-report=html",
+    # Coverage options temporarily disabled until pytest-cov is installed
+    # "--cov=src/Claude45_Demo",
+    # "--cov-report=term-missing",
+    # "--cov-report=html",
 ]
 testpaths = ["tests"]
 python_files = ["test_*.py"]
