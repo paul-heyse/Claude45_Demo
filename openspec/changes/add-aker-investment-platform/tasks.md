@@ -55,7 +55,7 @@
 
 ## 5. Scoring Engine
 
-- [ ] 5.1 Implement weighted scoring algorithm (30/30/20/20 weights)
+- [x] 5.1 Implement weighted scoring algorithm (30/30/20/20 weights)
 - [ ] 5.2 Create normalization functions for diverse metrics (0-100 scale)
 - [ ] 5.3 Build risk multiplier application (0.9-1.1 adjustment)
 - [ ] 5.4 Implement submarket ranking system

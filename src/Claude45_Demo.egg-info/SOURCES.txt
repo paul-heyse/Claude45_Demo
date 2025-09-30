@@ -18,5 +18,11 @@ src/Claude45_Demo/data_integration/exceptions.py
 src/Claude45_Demo/data_integration/irs.py
 src/Claude45_Demo/data_integration/lodes.py
 src/Claude45_Demo/geo_analysis/__init__.py
+src/Claude45_Demo/geo_analysis/osm.py
 src/Claude45_Demo/geo_analysis/transit.py
+src/Claude45_Demo/market_analysis/__init__.py
+src/Claude45_Demo/market_analysis/supply_constraint.py
+src/Claude45_Demo/risk_assessment/__init__.py
+src/Claude45_Demo/scoring_engine/__init__.py
+src/Claude45_Demo/scoring_engine/scoring_engine.py
 tests/test_basic.py
