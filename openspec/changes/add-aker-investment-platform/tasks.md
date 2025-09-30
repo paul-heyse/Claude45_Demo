@@ -68,7 +68,7 @@
 
 ## 6. Asset Evaluation Module
 
-- [ ] 6.1 Create product type taxonomy (garden, low-rise, mid-rise, mixed-use)
+- [x] 6.1 Create product type taxonomy (garden, low-rise, mid-rise, mixed-use)
 - [ ] 6.2 Implement deal archetype classifier (value-add, heavy lift, ground-up)
 - [ ] 6.3 Build unit mix optimizer (studio/1BR/2BR/3BR ratios)
 - [ ] 6.4 Create amenity requirement checker (bike storage, dog wash, EV)
