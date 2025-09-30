@@ -5,9 +5,9 @@
 - [x] 1.1 Set up project dependencies (pandas, geopandas, numpy, requests, shapely, scikit-learn)
 - [x] 1.2 Create base data integration framework with abstract API connector class
 - [x] 1.3 Implement caching layer with SQLite backend for API responses
-- [ ] 1.4 Build Census API connector (ACS, Building Permits, BFS)
+- [x] 1.4 Build Census API connector (ACS, Building Permits, BFS)
 - [x] 1.5 Build BLS API connector (CES, LAUS, QCEW)
-- [ ] 1.6 Build BEA API connector (Regional GDP, Personal Income)
+- [x] 1.6 Build BEA API connector (Regional GDP, Personal Income)
 - [ ] 1.7 Build IRS SOI migration data loader (CSV ingestion)
 - [ ] 1.8 Build LEHD LODES connector (workplace/daytime population)
 - [ ] 1.9 Create configuration management for API keys and rate limits
