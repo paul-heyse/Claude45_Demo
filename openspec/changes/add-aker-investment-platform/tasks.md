@@ -12,6 +12,8 @@
 - [x] 1.8 Build LEHD LODES connector (workplace/daytime population)
 - [x] 1.9 Create configuration management for API keys and rate limits
 - [x] 1.10 Write integration tests for data connectors with mock responses
+- [x] 1.11 Implement rate limiting with request tracking and intelligent queueing
+- [x] 1.12 Implement data validation with schema, range, and outlier detection
 
 ## 2. Geographic Analysis Module
 
