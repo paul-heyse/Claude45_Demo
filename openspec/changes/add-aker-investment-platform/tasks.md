@@ -122,12 +122,12 @@
 - [x] 10.2 Create cache configuration system (TTL policies per source)
 - [x] 10.3 Build cache warming and prefetching system
 - [x] 10.4 Implement cache statistics and monitoring
-- [ ] 10.5 Add cache inspection and debugging CLI commands
-- [ ] 10.6 Implement cache compression for large responses (>10KB)
-- [ ] 10.7 Add version-based cache invalidation
-- [ ] 10.8 Build cache benchmarking and profiling tools
-- [ ] 10.9 Implement graceful cache failure handling
-- [ ] 10.10 Add distributed cache support (optional Redis backend)
+- [x] 10.5 Add cache inspection and debugging CLI commands
+- [x] 10.6 Implement cache compression for large responses (>10KB)
+- [x] 10.7 Add version-based cache invalidation
+- [x] 10.8 Build cache benchmarking and profiling tools
+- [x] 10.9 Implement graceful cache failure handling
+- [x] 10.10 Add distributed cache support (optional Redis backend)
 
 ## 11. Documentation & Deployment
 

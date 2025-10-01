@@ -161,3 +161,16 @@ class CacheManager:
             conn.execute("DELETE FROM cache")
 
         logger.warning("Purged all cache entries")
+
+    def list_keys(self, limit: int = 100) -> list[str]:
+        """List cache keys.
+
+        Args:
+            limit: Maximum number of keys to return
+
+        Returns:
+            List of cache keys
+        """
+        with self._connect() as conn:
+            cursor = conn.execute("SELECT key FROM cache LIMIT ?", (limit,))
+            return [row[0] for row in cursor.fetchall()]
