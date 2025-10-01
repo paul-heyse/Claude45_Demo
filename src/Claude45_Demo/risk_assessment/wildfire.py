@@ -10,7 +10,9 @@ from __future__ import annotations
 import logging
 from typing import Any, Optional
 
+from Claude45_Demo.data_integration.landfire_fuel import LANDFIREFuelConnector
 from Claude45_Demo.data_integration.nasa_firms import NASAFIRMSConnector
+from Claude45_Demo.data_integration.usfs_whp import USFSWHPConnector
 from Claude45_Demo.data_integration.wui_classifier import WUIClassifier
 
 logger = logging.getLogger(__name__)
@@ -26,6 +28,8 @@ class WildfireRiskAnalyzer:
         self,
         firms_api_key: str | None = None,
         wui_classifier: Optional[WUIClassifier] = None,
+        whp_connector: Optional[USFSWHPConnector] = None,
+        fuel_connector: Optional[LANDFIREFuelConnector] = None,
     ) -> None:
         """
         Initialize wildfire risk analyzer.
@@ -33,6 +37,8 @@ class WildfireRiskAnalyzer:
         Args:
             firms_api_key: NASA FIRMS API key (optional, for production use)
             wui_classifier: WUI classifier for interface risk (optional)
+            whp_connector: USFS WHP connector for hazard potential (optional)
+            fuel_connector: LANDFIRE connector for fuel models (optional)
         """
         logger.info("WildfireRiskAnalyzer initialized")
 
@@ -43,12 +49,15 @@ class WildfireRiskAnalyzer:
             logger.info("NASA FIRMS connector initialized for production use")
 
         self.wui_classifier = wui_classifier or WUIClassifier()
+        self.whp_connector = whp_connector or USFSWHPConnector()
+        self.fuel_connector = fuel_connector or LANDFIREFuelConnector()
 
     def assess_wildfire_hazard_potential(
         self,
         latitude: float,
         longitude: float,
         mock_whp: dict[str, Any] | None = None,
+        elevation_ft: float = 5000,
     ) -> dict[str, Any]:
         """Assess USFS Wildfire Hazard Potential for location.
 
@@ -56,12 +65,33 @@ class WildfireRiskAnalyzer:
             latitude: Location latitude
             longitude: Location longitude
             mock_whp: Optional mock WHP data for testing
+            elevation_ft: Site elevation in feet
 
         Returns:
             Dictionary with mean/max WHP, normalized score, risk category
         """
+        # Try to use real USFS WHP connector first
+        if self.whp_connector is not None and mock_whp is None:
+            try:
+                whp_data = self.whp_connector.get_wildfire_hazard(
+                    latitude, longitude, elevation_ft
+                )
+
+                return {
+                    "mean_whp": whp_data["whp_rating"],
+                    "max_whp": whp_data["whp_rating"],
+                    "whp_score": whp_data["whp_score"],
+                    "risk_category": whp_data["whp_class"].lower().replace(" ", "_"),
+                    "data_source": "USFS WHP",
+                }
+            except Exception as e:
+                logger.warning(f"USFS WHP connector failed: {e}, using mock data")
+
+        # Fall back to mock data
         if mock_whp is None:
-            raise ValueError("Production USFS WHP API not yet implemented")
+            raise ValueError(
+                "Production USFS WHP API not configured and no mock data provided"
+            )
 
         mean_whp = mock_whp["mean_whp"]
         max_whp = mock_whp["max_whp"]
@@ -92,6 +122,7 @@ class WildfireRiskAnalyzer:
         latitude: float,
         longitude: float,
         mock_fuel_data: dict[str, Any] | None = None,
+        elevation_ft: float = 5000,
     ) -> dict[str, Any]:
         """Analyze LANDFIRE fuel models in surrounding area.
 
@@ -99,12 +130,40 @@ class WildfireRiskAnalyzer:
             latitude: Location latitude
             longitude: Location longitude
             mock_fuel_data: Optional mock fuel data for testing
+            elevation_ft: Site elevation in feet
 
         Returns:
             Dictionary with fuel types, high-risk percentage, fuel score
         """
+        # Try to use real LANDFIRE connector first
+        if self.fuel_connector is not None and mock_fuel_data is None:
+            try:
+                fuel_data = self.fuel_connector.get_fuel_model(
+                    latitude, longitude, elevation_ft
+                )
+
+                # Map fuel category to fuel types
+                fuel_category = fuel_data["fuel_category"]
+                fuel_types = {fuel_category: 100}  # Simplified: single dominant fuel
+
+                # Determine high-risk percentage
+                high_risk_pct = 100 if fuel_category in self.HIGH_RISK_FUELS else 30
+
+                return {
+                    "fuel_types": fuel_types,
+                    "high_risk_fuel_pct": high_risk_pct,
+                    "fuel_score": fuel_data["fuel_score"],
+                    "dominant_fuel_types": [fuel_category],
+                    "data_source": "LANDFIRE",
+                }
+            except Exception as e:
+                logger.warning(f"LANDFIRE connector failed: {e}, using mock data")
+
+        # Fall back to mock data
         if mock_fuel_data is None:
-            raise ValueError("Production LANDFIRE API not yet implemented")
+            raise ValueError(
+                "Production LANDFIRE API not configured and no mock data provided"
+            )
 
         fuel_types = mock_fuel_data["fuel_types"]
 

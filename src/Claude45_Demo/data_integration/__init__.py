@@ -34,12 +34,14 @@ from .exceptions import (
     ValidationError,
 )
 from .irs import IRSMigrationLoader
+from .landfire_fuel import LANDFIREFuelConnector
 from .lodes import LEHDLODESConnector
 from .memory_cache import MemoryCache
 from .nasa_firms import NASAFIRMSConnector
 from .noaa_spc import NOAASPCConnector
 from .prism_snow import PRISMSnowConnector
 from .rate_limiter import RateLimitConfig, RateLimiter, get_rate_limiter
+from .usfs_whp import USFSWHPConnector
 from .usgs_nshm import USGSNSHMConnector
 from .validator import (
     DataValidator,
@@ -80,9 +82,11 @@ __all__ = [
     "EPAAQSConnector",
     "EPAECHOConnector",
     "EPARadonConnector",
+    "LANDFIREFuelConnector",
     "NASAFIRMSConnector",
     "NOAASPCConnector",
     "PRISMSnowConnector",
+    "USFSWHPConnector",
     "USGSNSHMConnector",
     "WUIClassifier",
     "RateLimiter",
