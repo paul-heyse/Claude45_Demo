@@ -129,15 +129,43 @@
 - [x] 10.9 Implement graceful cache failure handling
 - [x] 10.10 Add distributed cache support (optional Redis backend)
 
-## 11. Documentation & Deployment
+## 11. Web GUI Implementation
 
-- [ ] 11.1 Write comprehensive README with quickstart
-- [ ] 11.2 Create API documentation for all public modules
-- [ ] 11.3 Document data source catalog with update frequencies
-- [ ] 11.4 Write deployment guide (environment setup, API keys)
-- [ ] 11.5 Create architecture diagram and data flow charts
-- [ ] 11.6 Document scoring methodology and validation
-- [ ] 11.7 Build example notebooks (Jupyter) for common workflows
-- [ ] 11.8 Create troubleshooting guide
-- [ ] 11.9 Write contribution guidelines
-- [ ] 11.10 Prepare handoff documentation for Aker team
+- [ ] 11.1 Set up Streamlit application structure
+- [ ] 11.2 Implement Dashboard page (metrics, charts, quick actions)
+- [ ] 11.3 Implement Market Screening page (search, filters, results table)
+- [ ] 11.4 Implement Market Details page (scores, charts, map, trends)
+- [ ] 11.5 Implement Portfolio Management page (track, compare, manage)
+- [ ] 11.6 Implement Reports page (templates, generation, export)
+- [ ] 11.7 Implement Data Management page (cache, sources, warming)
+- [ ] 11.8 Implement Settings page (API keys, preferences, cache config)
+- [ ] 11.9 Implement Help & Documentation page (guides, FAQ, tutorials)
+- [ ] 11.10 Create reusable UI components (charts, maps, tables, filters)
+- [ ] 11.11 Implement backend REST API endpoints
+- [ ] 11.12 Add authentication and session management
+- [ ] 11.13 Implement PDF/Excel/CSV export functionality
+- [ ] 11.14 Add responsive design and mobile optimization
+- [ ] 11.15 Implement accessibility features (ARIA, keyboard nav)
+- [ ] 11.16 Add automated testing (unit, integration, e2e)
+- [ ] 11.17 Deploy to Streamlit Cloud (MVP)
+- [ ] 11.18 Create Docker deployment configuration
+- [ ] 11.19 Performance optimization (caching, lazy loading)
+- [ ] 11.20 Security hardening (HTTPS, input validation, rate limiting)
+
+## 12. Documentation & Deployment
+
+- [ ] 12.1 Write comprehensive README with quickstart
+- [ ] 12.2 Create API documentation for all public modules
+- [ ] 12.3 Document data source catalog with update frequencies
+- [ ] 12.4 Write deployment guide (environment setup, API keys)
+- [ ] 12.5 Create architecture diagram and data flow charts
+- [ ] 12.6 Document scoring methodology and validation
+- [ ] 12.7 Build example notebooks (Jupyter) for common workflows
+- [ ] 12.8 Create troubleshooting guide
+- [ ] 12.9 Write contribution guidelines
+- [ ] 12.10 Prepare handoff documentation for Aker team
+- [ ] 12.11 Create user guide for Web GUI
+- [ ] 12.12 Record demo videos for each major feature
+- [ ] 12.13 Write technical specifications for each module
+- [ ] 12.14 Document API endpoints and request/response formats
+- [ ] 12.15 Create data dictionary for all metrics and scores

@@ -9,6 +9,7 @@
 ## 🎯 Objective
 
 Replace stub implementations in the risk assessment module with real API connectors for:
+
 1. **Air Quality Analysis** (EPA AQS)
 2. **Wildfire Risk Assessment** (NASA FIRMS)
 
@@ -21,6 +22,7 @@ Replace stub implementations in the risk assessment module with real API connect
 **Purpose:** Access EPA Air Quality System data for PM2.5 measurements
 
 **Features:**
+
 - Annual summary data by state/county
 - PM2.5 metrics:
   - Annual mean concentration (μg/m³)
@@ -33,9 +35,10 @@ Replace stub implementations in the risk assessment module with real API connect
 - Rate limiting (500 requests/day)
 - Exponential backoff retry logic
 
-**API Documentation:** https://aqs.epa.gov/aqsweb/documents/data_api.html
+**API Documentation:** <https://aqs.epa.gov/aqsweb/documents/data_api.html>
 
 **Usage Example:**
+
 ```python
 from Claude45_Demo.data_integration import EPAAQSConnector
 
@@ -55,6 +58,7 @@ print(f"Days over 35 μg/m³: {data['days_over_35']}")
 ```
 
 **Key Methods:**
+
 - `get_annual_summary_by_site()` - Raw API data by monitoring site
 - `get_pm25_annual_data()` - County-level PM2.5 metrics
 - `find_nearest_monitor()` - Find closest monitoring station (limited)
@@ -66,6 +70,7 @@ print(f"Days over 35 μg/m³: {data['days_over_35']}")
 **Purpose:** Access near real-time active fire/hotspot data from satellites
 
 **Features:**
+
 - MODIS and VIIRS satellite fire detection
 - Bounding box search
 - Radius search with distance calculation
@@ -74,9 +79,10 @@ print(f"Days over 35 μg/m³: {data['days_over_35']}")
 - Confidence scoring
 - Distance calculation (Haversine formula)
 
-**API Documentation:** https://firms.modaps.eosdis.nasa.gov/api/
+**API Documentation:** <https://firms.modaps.eosdis.nasa.gov/api/>
 
 **Usage Example:**
+
 ```python
 from Claude45_Demo.data_integration import NASAFIRMSConnector
 
@@ -95,6 +101,7 @@ print(f"Nearest hotspot: {analysis['nearest_hotspot_km']} km")
 ```
 
 **Key Methods:**
+
 - `get_hotspots_by_bbox()` - Fire hotspots in bounding box
 - `get_hotspots_by_radius()` - Fire hotspots within radius of point
 - `analyze_fire_activity()` - Summarize recent fire activity
@@ -104,6 +111,7 @@ print(f"Nearest hotspot: {analysis['nearest_hotspot_km']} km")
 ### 3. Updated AirQualityAnalyzer
 
 **Changes:**
+
 - Added optional EPA API credentials in `__init__()`
 - `analyze_pm25()` now uses real EPA AQS data when configured
 - Requires `state_code` and `county_code` for production use
@@ -111,6 +119,7 @@ print(f"Nearest hotspot: {analysis['nearest_hotspot_km']} km")
 - Graceful error handling with fallback
 
 **Production Usage:**
+
 ```python
 from Claude45_Demo.risk_assessment import AirQualityAnalyzer
 
@@ -129,6 +138,7 @@ result = analyzer.analyze_pm25(
 ```
 
 **Testing Usage (unchanged):**
+
 ```python
 analyzer = AirQualityAnalyzer()
 
@@ -149,6 +159,7 @@ result = analyzer.analyze_pm25(
 ### 4. Updated WildfireRiskAnalyzer
 
 **Changes:**
+
 - Added optional NASA FIRMS API key in `__init__()`
 - `assess_fire_history()` now uses real NASA FIRMS data
 - Provides recent fire activity (7 days)
@@ -156,6 +167,7 @@ result = analyzer.analyze_pm25(
 - Documents limitation vs. full MTBS integration
 
 **Production Usage:**
+
 ```python
 from Claude45_Demo.risk_assessment import WildfireRiskAnalyzer
 
@@ -175,17 +187,20 @@ history = analyzer.assess_fire_history(
 ## 📊 Architecture & Design Decisions
 
 ### 1. Backward Compatibility
+
 - All existing tests continue to work with mock data
 - Optional API credentials enable production use
 - Graceful degradation when APIs unavailable
 
 ### 2. Follows Existing Patterns
+
 - Extends `APIConnector` base class
 - Uses `CacheManager` for response caching
 - Leverages `RateLimiter` for request throttling
 - Consistent error handling with `DataSourceError`
 
 ### 3. Production-Ready Features
+
 - ✅ Caching (configurable TTL)
 - ✅ Rate limiting
 - ✅ Exponential backoff retries
@@ -200,14 +215,16 @@ history = analyzer.assess_fire_history(
 ### Free APIs (No Cost)
 
 #### EPA AQS
-- **Registration:** https://aqs.epa.gov/data/api/signup
+
+- **Registration:** <https://aqs.epa.gov/data/api/signup>
 - **Rate Limit:** 500 requests/day
 - **Response Time:** Fast (~1-2 seconds)
 - **Coverage:** US only, county-level
 - **Data Lag:** Updated quarterly
 
 #### NASA FIRMS
-- **Registration:** https://firms.modaps.eosdis.nasa.gov/api/
+
+- **Registration:** <https://firms.modaps.eosdis.nasa.gov/api/>
 - **Rate Limit:** Generous (1000+ requests/day)
 - **Response Time:** Fast (~2-3 seconds)
 - **Coverage:** Global
@@ -249,11 +266,13 @@ data_sources:
 ## ✅ Testing Status
 
 ### Unit Tests
+
 - ✅ Existing risk assessment tests pass (use mock data)
 - ✅ Backward compatibility maintained
 - 🔄 New connector tests needed (in progress)
 
 ### Integration Tests
+
 - 🔄 Real API response tests (in progress)
 - 🔄 Error handling scenarios
 - 🔄 Rate limiting verification
@@ -263,18 +282,21 @@ data_sources:
 ## 📈 Next Steps
 
 ### Immediate (Week 1)
+
 1. ✅ EPA AQS connector - **COMPLETE**
 2. ✅ NASA FIRMS connector - **COMPLETE**
 3. 🔄 Integration tests with real APIs - **IN PROGRESS**
 4. 📝 NOAA HMS for smoke day data - **PENDING**
 
 ### Near-term (Week 2-3)
+
 5. USFS WHP (Wildfire Hazard Potential) API
 6. LANDFIRE fuel model data
 7. USGS NSHM (seismic) API
 8. NOAA SPC (hail) API
 
 ### Medium-term (Week 4+)
+
 9. MTBS historical fire perimeters
 10. State water rights APIs (CO/UT/ID)
 11. Regulatory friction (Socrata/Accela)
@@ -285,17 +307,20 @@ data_sources:
 ## 💡 Lessons Learned
 
 ### What Worked Well
+
 1. **Existing Infrastructure** - Rate limiting and caching "just worked"
 2. **Base Class Pattern** - `APIConnector` made integration straightforward
 3. **Backward Compatibility** - Mock data fallback preserved all existing tests
 4. **Gradual Migration** - Can replace stubs incrementally
 
 ### Challenges Encountered
+
 1. **EPA AQS Limitations** - No direct lat/lon search, requires state/county
 2. **FIRMS Time Limit** - Only 10 days of data, not true historical
 3. **Data Complexity** - EPA returns many fields, needed domain knowledge
 
 ### Design Improvements
+
 1. **Location Geocoding** - Need lat/lon → state/county lookup utility
 2. **Historical Data** - FIRMS + MTBS integration for complete timeline
 3. **Monitor Selection** - Nearest monitor algorithm needed for EPA
@@ -305,16 +330,19 @@ data_sources:
 ## 📊 Impact Assessment
 
 ### Code Changes
+
 - **New Files:** 2 API connectors (~900 lines)
 - **Modified Files:** 2 analyzers (~100 lines changed)
 - **Tests:** Backward compatible, no test changes required
 
 ### Performance
+
 - **EPA AQS:** ~1-2 second response (with caching)
 - **FIRMS:** ~2-3 second response (with caching)
 - **Cache Hit:** < 10ms (SQLite)
 
 ### Data Quality
+
 - **EPA AQS:** High quality, official government data
 - **NASA FIRMS:** Satellite-based, confidence scoring available
 - **Coverage:** EPA = US only, FIRMS = global
@@ -373,18 +401,21 @@ print(f"Fire History Score: {result['fire_history_score']}/100")
 ## 📚 References
 
 ### API Documentation
+
 - [EPA AQS API](https://aqs.epa.gov/aqsweb/documents/data_api.html)
 - [NASA FIRMS API](https://firms.modaps.eosdis.nasa.gov/api/)
 - [EPA AQS Signup](https://aqs.epa.gov/data/api/signup)
 - [NASA FIRMS Signup](https://firms.modaps.eosdis.nasa.gov/api/)
 
 ### Related Code
+
 - `src/Claude45_Demo/data_integration/epa_aqs.py`
 - `src/Claude45_Demo/data_integration/nasa_firms.py`
 - `src/Claude45_Demo/risk_assessment/air_quality.py`
 - `src/Claude45_Demo/risk_assessment/wildfire.py`
 
 ### Specifications
+
 - `openspec/changes/add-aker-investment-platform/specs/risk-assessment/spec.md`
 - `openspec/changes/add-aker-investment-platform/specs/data-integration/spec.md`
 
@@ -399,6 +430,7 @@ print(f"Fire History Score: {result['fire_history_score']}/100")
 **Next Phase:** Integration tests + additional APIs
 
 This proof-of-concept demonstrates that:
+
 1. The existing infrastructure (rate limiting, caching, base classes) works perfectly
 2. Stub replacement is straightforward and maintains backward compatibility
 3. Real API integration is feasible and performant
