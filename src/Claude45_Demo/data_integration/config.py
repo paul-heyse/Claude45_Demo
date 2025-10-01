@@ -142,7 +142,7 @@ class ConfigManager:
             ConfigurationError: If API key is not configured or still contains ${VAR}
         """
         try:
-            api_key = self.config["data_sources"][source]["api_key"]
+            api_key: str = str(self.config["data_sources"][source]["api_key"])
 
             # Check if environment variable wasn't substituted
             if "${" in api_key:
@@ -298,7 +298,8 @@ class ConfigManager:
             Dictionary with keys: min, max
         """
         try:
-            return self.config["scoring"]["risk_multiplier_range"]
+            range_config = self.config["scoring"]["risk_multiplier_range"]
+            return {k: float(v) for k, v in range_config.items()}
         except KeyError:
             logger.warning("Risk multiplier range not configured, using defaults")
             return {"min": 0.85, "max": 1.10}

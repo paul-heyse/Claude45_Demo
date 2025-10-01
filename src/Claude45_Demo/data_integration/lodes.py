@@ -58,7 +58,7 @@ class LEHDLODESConnector(APIConnector):
             response.raise_for_status()
             return response.content
 
-        return self._retry_with_backoff(_make_request)
+        return self._retry_with_backoff(_make_request)  # type: ignore[return-value]
 
     def parse(self, response: bytes) -> pd.DataFrame:
         """Parse raw CSV bytes into a DataFrame with string geocodes."""
@@ -79,10 +79,24 @@ class LEHDLODESConnector(APIConnector):
             f"lodes_wac_{state.lower()}_{workplace_tract}_{segment}_{job_type}_{year}"
         )
 
-        cached = self.cache.get(cache_key)
-        if cached is not None:
-            logger.info("Cache hit for %s", cache_key)
-            metrics_df = cached.copy()
+        if self.cache:
+            cached = self.cache.get(cache_key)
+            if cached is not None:
+                logger.info("Cache hit for %s", cache_key)
+                metrics_df = cached.copy()  # type: ignore[assignment]
+            else:
+                raw_bytes = self.fetch(
+                    {
+                        "state": state,
+                        "dataset": "wac",
+                        "segment": segment,
+                        "job_type": job_type,
+                        "year": year,
+                    }
+                )
+                parsed = self.parse(raw_bytes)
+                metrics_df = self._aggregate_metrics(parsed, workplace_tract)
+                self.cache.set(cache_key, metrics_df, ttl=self.cache_ttl)
         else:
             raw_bytes = self.fetch(
                 {
@@ -95,7 +109,6 @@ class LEHDLODESConnector(APIConnector):
             )
             parsed = self.parse(raw_bytes)
             metrics_df = self._aggregate_metrics(parsed, workplace_tract)
-            self.cache.set(cache_key, metrics_df, ttl=self.cache_ttl)
 
         result = metrics_df.copy()
         if residential_population > 0:
