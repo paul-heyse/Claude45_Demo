@@ -132,15 +132,15 @@
 ## 11. Web GUI Implementation
 
 - [x] 11.1 Set up Streamlit application structure
-- [ ] 11.2 Implement Dashboard page (metrics, charts, quick actions)
-- [ ] 11.3 Implement Market Screening page (search, filters, results table)
-- [ ] 11.4 Implement Market Details page (scores, charts, map, trends)
-- [ ] 11.5 Implement Portfolio Management page (track, compare, manage)
-- [ ] 11.6 Implement Reports page (templates, generation, export)
-- [ ] 11.7 Implement Data Management page (cache, sources, warming)
-- [ ] 11.8 Implement Settings page (API keys, preferences, cache config)
-- [ ] 11.9 Implement Help & Documentation page (guides, FAQ, tutorials)
-- [ ] 11.10 Create reusable UI components (charts, maps, tables, filters)
+- [x] 11.2 Implement Dashboard page (metrics, charts, quick actions)
+- [x] 11.3 Implement Market Screening page (search, filters, results table)
+- [x] 11.4 Implement Market Details page (scores, charts, map, trends)
+- [x] 11.5 Implement Portfolio Management page (track, compare, manage)
+- [x] 11.6 Implement Reports page (templates, generation, export)
+- [x] 11.7 Implement Data Management page (cache, sources, warming)
+- [x] 11.8 Implement Settings page (API keys, preferences, cache config)
+- [x] 11.9 Implement Help & Documentation page (guides, FAQ, tutorials)
+- [x] 11.10 Create reusable UI components (charts, maps, tables, filters)
 - [ ] 11.11 Implement backend REST API endpoints
 - [ ] 11.12 Add authentication and session management
 - [ ] 11.13 Implement PDF/Excel/CSV export functionality
