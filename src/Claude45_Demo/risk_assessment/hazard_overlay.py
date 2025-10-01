@@ -3,7 +3,9 @@
 from __future__ import annotations
 
 import logging
-from typing import Any
+from typing import Any, Optional
+
+from Claude45_Demo.data_integration.epa_radon import EPARadonConnector
 
 logger = logging.getLogger(__name__)
 
@@ -11,8 +13,13 @@ logger = logging.getLogger(__name__)
 class HazardOverlayAnalyzer:
     """Analyze multiple hazard types: seismic, hail, wind, radon, snow load."""
 
-    def __init__(self) -> None:
-        """Initialize hazard overlay analyzer."""
+    def __init__(self, *, radon_connector: Optional[EPARadonConnector] = None) -> None:
+        """Initialize hazard overlay analyzer.
+
+        Args:
+            radon_connector: Optional EPA Radon connector for real data
+        """
+        self.radon_connector = radon_connector
         logger.info("HazardOverlayAnalyzer initialized")
 
     def assess_seismic_risk(
@@ -124,8 +131,33 @@ class HazardOverlayAnalyzer:
         Returns:
             Dictionary with radon zone, mitigation need, risk score
         """
+        # Try to use real EPA Radon connector first
+        if self.radon_connector is not None and mock_radon is None:
+            try:
+                state_fips = county_fips[:2]
+                county_fips_only = county_fips[2:]
+                radon_data = self.radon_connector.assess_radon_risk(
+                    state_fips, county_fips_only
+                )
+
+                return {
+                    "epa_radon_zone": radon_data["radon_zone"],
+                    "radon_risk_score": radon_data["risk_score"],
+                    "risk_level": radon_data["risk_level"],
+                    "mitigation_cost_estimate": (
+                        1500 if radon_data["radon_zone"] <= 2 else 0
+                    ),
+                    "mitigation_required": radon_data["requires_testing"],
+                    "data_source": "EPA Radon Connector",
+                }
+            except Exception as e:
+                logger.warning(f"EPA Radon connector failed: {e}, using mock data")
+
+        # Fall back to mock data
         if mock_radon is None:
-            raise ValueError("Production EPA radon API not yet implemented")
+            raise ValueError(
+                "Production EPA radon API not configured and no mock data provided"
+            )
 
         radon_zone = mock_radon["epa_radon_zone"]  # 1, 2, or 3
 

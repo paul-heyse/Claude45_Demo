@@ -8,9 +8,10 @@ classification.
 from __future__ import annotations
 
 import logging
-from typing import Any
+from typing import Any, Optional
 
 from Claude45_Demo.data_integration.nasa_firms import NASAFIRMSConnector
+from Claude45_Demo.data_integration.wui_classifier import WUIClassifier
 
 logger = logging.getLogger(__name__)
 
@@ -21,12 +22,17 @@ class WildfireRiskAnalyzer:
     # High-risk fuel types (timber and brush have high fire intensity)
     HIGH_RISK_FUELS = {"timber", "brush", "chaparral", "conifer"}
 
-    def __init__(self, firms_api_key: str | None = None) -> None:
+    def __init__(
+        self,
+        firms_api_key: str | None = None,
+        wui_classifier: Optional[WUIClassifier] = None,
+    ) -> None:
         """
         Initialize wildfire risk analyzer.
 
         Args:
             firms_api_key: NASA FIRMS API key (optional, for production use)
+            wui_classifier: WUI classifier for interface risk (optional)
         """
         logger.info("WildfireRiskAnalyzer initialized")
 
@@ -35,6 +41,8 @@ class WildfireRiskAnalyzer:
         if firms_api_key:
             self.firms_connector = NASAFIRMSConnector(api_key=firms_api_key)
             logger.info("NASA FIRMS connector initialized for production use")
+
+        self.wui_classifier = wui_classifier or WUIClassifier()
 
     def assess_wildfire_hazard_potential(
         self,
@@ -239,6 +247,8 @@ class WildfireRiskAnalyzer:
         latitude: float,
         longitude: float,
         mock_wui: dict[str, Any] | None = None,
+        state_fips: str | None = None,
+        county_fips: str | None = None,
     ) -> dict[str, Any]:
         """Classify Wildland-Urban Interface status.
 
@@ -246,12 +256,49 @@ class WildfireRiskAnalyzer:
             latitude: Location latitude
             longitude: Location longitude
             mock_wui: Optional mock WUI data for testing
+            state_fips: Optional state FIPS code for WUI lookup
+            county_fips: Optional county FIPS code for WUI lookup
 
         Returns:
             Dictionary with WUI class, risk score, evacuation constraints
         """
+        # Try to use real WUI classifier first
+        if (
+            self.wui_classifier is not None
+            and mock_wui is None
+            and state_fips is not None
+            and county_fips is not None
+        ):
+            try:
+                wui_data = self.wui_classifier.assess_wildfire_interface_risk(
+                    state_fips, county_fips
+                )
+
+                # Map WUI category to classification
+                category_to_class = {
+                    "interface": "Interface",
+                    "intermix": "Intermix",
+                    "low_density": "Low Density",
+                    "non_wui": "Non-WUI",
+                }
+                wui_class = category_to_class.get(wui_data["wui_category"], "Non-WUI")
+
+                return {
+                    "wui_class": wui_class,
+                    "wui_risk_score": wui_data["risk_score"],
+                    "wui_category": wui_data["wui_category"],
+                    "risk_level": wui_data["risk_level"],
+                    "requires_mitigation": wui_data["requires_mitigation"],
+                    "data_source": "USFS WUI Classifier",
+                }
+            except Exception as e:
+                logger.warning(f"WUI Classifier failed: {e}, using mock data")
+
+        # Fall back to mock data
         if mock_wui is None:
-            raise ValueError("Production USFS WUI API not yet implemented")
+            raise ValueError(
+                "Production USFS WUI API not configured and no mock data provided"
+            )
 
         wui_class = mock_wui["classification"]
         evacuation_routes = mock_wui["evacuation_routes"]

@@ -6,7 +6,9 @@ Evaluates water rights, drought risk, and supply constraints.
 from __future__ import annotations
 
 import logging
-from typing import Any
+from typing import Any, Optional
+
+from Claude45_Demo.data_integration.drought_monitor import DroughtMonitorConnector
 
 logger = logging.getLogger(__name__)
 
@@ -14,8 +16,15 @@ logger = logging.getLogger(__name__)
 class WaterStressAnalyzer:
     """Analyze water availability and drought risk."""
 
-    def __init__(self) -> None:
-        """Initialize water stress analyzer."""
+    def __init__(
+        self, *, drought_connector: Optional[DroughtMonitorConnector] = None
+    ) -> None:
+        """Initialize water stress analyzer.
+
+        Args:
+            drought_connector: Optional Drought Monitor connector for real data
+        """
+        self.drought_connector = drought_connector
         logger.info("WaterStressAnalyzer initialized")
 
     def assess_water_rights(
@@ -70,6 +79,8 @@ class WaterStressAnalyzer:
         county_fips: str,
         lookback_years: int = 10,
         mock_drought: dict[str, Any] | None = None,
+        latitude: float | None = None,
+        longitude: float | None = None,
     ) -> dict[str, Any]:
         """Assess drought frequency and water stress.
 
@@ -77,12 +88,44 @@ class WaterStressAnalyzer:
             county_fips: County FIPS code
             lookback_years: Years to analyze
             mock_drought: Optional mock drought data
+            latitude: Optional latitude for location-based lookup
+            longitude: Optional longitude for location-based lookup
 
         Returns:
             Dictionary with drought metrics and stress score
         """
+        # Try to use real Drought Monitor connector first
+        if (
+            self.drought_connector is not None
+            and mock_drought is None
+            and latitude is not None
+            and longitude is not None
+        ):
+            try:
+                drought_data = self.drought_connector.assess_water_stress(
+                    latitude, longitude, lookback_weeks=lookback_years * 52
+                )
+
+                return {
+                    "county_fips": county_fips,
+                    "current_drought_level": drought_data["current_drought_level"],
+                    "drought_category": drought_data["current_category"],
+                    "stress_score": drought_data["risk_score"],
+                    "water_stress_detected": drought_data["water_stress_detected"],
+                    "severe_stress": drought_data["severe_stress"],
+                    "lookback_years": lookback_years,
+                    "data_source": "U.S. Drought Monitor",
+                }
+            except Exception as e:
+                logger.warning(
+                    f"Drought Monitor connector failed: {e}, using mock data"
+                )
+
+        # Fall back to mock data
         if mock_drought is None:
-            raise ValueError("Production drought monitor API not yet implemented")
+            raise ValueError(
+                "Production drought monitor API not configured and no mock data provided"
+            )
 
         pct_years_in_drought = mock_drought["pct_years_in_moderate_plus_drought"]
         groundwater_overdraft = mock_drought.get("groundwater_overdraft", False)

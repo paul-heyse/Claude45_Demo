@@ -21,7 +21,10 @@ from .cache_stats import (
 from .cache_warmer import CacheWarmer, PrefetchScheduler, WarmingProgress, WarmingResult
 from .census import CensusConnector
 from .config import ConfigManager
+from .drought_monitor import DroughtMonitorConnector
 from .epa_aqs import EPAAQSConnector
+from .epa_echo import EPAECHOConnector
+from .epa_radon import EPARadonConnector
 from .exceptions import (
     AkerPlatformError,
     CacheError,
@@ -44,6 +47,7 @@ from .validator import (
     create_location_validator,
     detect_outliers,
 )
+from .wui_classifier import WUIClassifier
 
 __all__ = [
     "APIConnector",
@@ -69,8 +73,12 @@ __all__ = [
     "ConfigManager",
     "LEHDLODESConnector",
     "IRSMigrationLoader",
+    "DroughtMonitorConnector",
     "EPAAQSConnector",
+    "EPAECHOConnector",
+    "EPARadonConnector",
     "NASAFIRMSConnector",
+    "WUIClassifier",
     "RateLimiter",
     "RateLimitConfig",
     "get_rate_limiter",
