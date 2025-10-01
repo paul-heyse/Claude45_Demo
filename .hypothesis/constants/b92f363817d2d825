@@ -1,0 +1,4 @@
+# file: /home/paul/Claude45_Demo/src/Claude45_Demo/market_analysis/convenience.py
+# hypothesis_version: 6.140.2
+
+[0.0, 0.05, 0.15, 0.2, 0.4, 0.6, 5.0, 8.3, 12.5, 20.0, 25.0, 50.0, 100.0, 100, 5000, 15000, 'amenity_access', 'amenity_counts', 'components', 'daytime_population', 'delivery_viability', 'grocery', 'pharmacy', 'retail_vacancy', 'school', 'score', 'service_frequency', 'stop_coverage', 'street_network', 'transit_stop', 'weekend_service']

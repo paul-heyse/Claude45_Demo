@@ -1,0 +1,4 @@
+# file: /home/paul/Claude45_Demo/src/Claude45_Demo/market_analysis/elasticity.py
+# hypothesis_version: 6.140.2
+
+[0.0, 0.03, 0.25, 0.35, 0.4, 2.0, 3.0, 5.0, 7.0, 10.0, 40.0, 80.0, 100.0, 100, 'beats_national_avg', 'beats_state_avg', 'cagr_values', 'comparisons', 'components', 'confidence', 'employment', 'employment_momentum', 'income', 'income_momentum', 'medium', 'metadata', 'metrics', 'national_avg', 'permits_3yr_avg', 'population', 'population_momentum', 'proxy_estimate', 'score', 'state_avg', 'units_delivered_3yr', 'vacancy_rate']

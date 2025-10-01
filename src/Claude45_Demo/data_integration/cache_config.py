@@ -278,7 +278,7 @@ class CacheConfig:
             merged: Dict[str, Any] = dict(base)
             for key, value in override.items():
                 if isinstance(value, Mapping) and isinstance(base.get(key), Mapping):
-                    merged[key] = deep_merge(base[key], value)  # type: ignore[index]
+                    merged[key] = deep_merge(base[key], value)
                 else:
                     merged[key] = value
             return merged

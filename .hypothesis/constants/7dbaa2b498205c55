@@ -1,0 +1,4 @@
+# file: /home/paul/Claude45_Demo/src/Claude45_Demo/risk_assessment/air_quality.py
+# hypothesis_version: 6.140.2
+
+[0.5, 100, 'annual_mean_pm25', 'chronic_exposure', 'components', 'composite_score', 'days_over_35', 'heavy_smoke_days', 'high', 'low', 'moderate', 'pm25_risk_score', 'recommendations', 'risk_level', 'smoke_risk_score', 'total_smoke_days', 'wildfire_impact', 'wildfire_smoke_days', 'years_analyzed']

@@ -1,0 +1,4 @@
+# file: /home/paul/Claude45_Demo/src/Claude45_Demo/market_analysis/supply_constraint.py
+# hypothesis_version: 6.140.2
+
+[-10.0, -5.0, 0.0, 0.04, 0.08, 0.25, 0.35, 0.4, 5.0, 10.0, 15.0, 20.0, 50.0, 60.0, 80.0, 100.0, 270.0, 180, 450, 1000, 'complete', 'components', 'metadata', 'missing_components', 'n_components', 'permit_elasticity', 'regulatory_friction', 'score', 'weights']

@@ -1,0 +1,4 @@
+# file: /home/paul/Claude45_Demo/src/Claude45_Demo/risk_assessment/water_stress.py
+# hypothesis_version: 6.140.2
+
+[0.3, 0.4, 0.6, 100, 15000, 'availability_score', 'chronic_drought', 'components', 'drought_stress_score', 'has_decreed_rights', 'high', 'lookback_years', 'low', 'moderate', 'municipal_supply', 'pct_years_in_drought', 'recommendation', 'risk_level', 'state', 'tap_fees_per_unit', 'usgs_stress_index']

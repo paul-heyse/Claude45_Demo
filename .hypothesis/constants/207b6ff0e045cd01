@@ -1,0 +1,4 @@
+# file: /home/paul/Claude45_Demo/src/Claude45_Demo/risk_assessment/wildfire.py
+# hypothesis_version: 6.140.2
+
+[0.2, 0.25, 0.3, 100, 1000, 'Interface', 'Intermix', 'acres', 'brush', 'chaparral', 'classification', 'components', 'composite_score', 'conifer', 'distance_km', 'dominant_fuel_types', 'evacuation_routes', 'extreme', 'fire_history_score', 'fires_within_10km', 'fuel_score', 'fuel_types', 'high', 'high_risk_fuel_pct', 'lookback_years', 'low', 'max_whp', 'mean_whp', 'mitigation_required', 'moderate', 'notes', 'recent_fire_activity', 'recommendations', 'risk_category', 'risk_level', 'timber', 'very_high', 'whp_score', 'wui_class', 'wui_risk_score']

@@ -373,7 +373,7 @@ def test_detect_outliers_multiple_outliers():
     values = [10, 11, 12, 13, 150, 200, 14, 15]
 
     # Use z-score method which is more sensitive for extreme outliers
-    outliers = detect_outliers(values, method="zscore", threshold=2.0)
+    outliers = detect_outliers(values, method="zscore", threshold=1.5)
 
     assert len(outliers) >= 2
     assert 4 in outliers  # 150

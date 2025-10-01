@@ -1,0 +1,4 @@
+# file: /home/paul/Claude45_Demo/src/Claude45_Demo/risk_assessment/fema_flood.py
+# hypothesis_version: 6.140.2
+
+[0.0, 0.003, 0.004, 0.12, 0.25, 0.5, 1.0, 400.0, 500.0, 1000.0, 100, '0.2', '; ', 'A', 'AE', 'AH', 'AO', 'FLD_ZONE', 'H', 'Preferred Risk', 'SFHA_TF', 'STATIC_BFE', 'Standard', 'T', 'UNMAPPED', 'V', 'VE', 'X', 'ZONE_SUBTY', 'annual_premium', 'base_flood_elevation', 'chronic_flooding', 'discount_applied', 'distance_km', 'event_count', 'features', 'freeboard_ft', 'hazard_class', 'high', 'historical_score', 'major', 'minimal', 'moderate', 'nfip_eligible', 'notes', 'policy_type', 'premium_pct', 'properties', 'risk_adjustment', 'risk_category', 'risk_flag', 'risk_score', 'severity', 'sfha', 'unknown', 'zone']

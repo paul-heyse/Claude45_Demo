@@ -1,0 +1,4 @@
+# file: /home/paul/Claude45_Demo/src/Claude45_Demo/risk_assessment/climate_projections.py
+# hypothesis_version: 6.140.2
+
+[0.2, 0.3, 0.5, 1.0, 1.15, 1.25, 100, 2040, 2050, 2060, 'High emissions', 'Low emissions', 'Middle-of-the-road', 'Moderate emissions', 'NOAA/USGS', 'RCP2.6', 'RCP4.5', 'RCP8.5', 'SSP2', 'adjustment_applied', 'adjustment_factor', 'adjustment_pct', 'adjustments_applied', 'climate_scenarios', 'confidence', 'critical_imbalance', 'current_score', 'drought', 'drought_score', 'high', 'low', 'medium', 'name', 'notes', 'projection_source', 'projection_year', 'scenario', 'scenario_description', 'wildfire', 'wildfire_score']

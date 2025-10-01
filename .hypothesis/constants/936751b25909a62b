@@ -1,0 +1,4 @@
+# file: /home/paul/Claude45_Demo/src/Claude45_Demo/risk_assessment/hazard_overlay.py
+# hypothesis_version: 6.140.2
+
+[0.05, 0.1, 0.15, 0.17, 0.2, 0.3, 0.33, 0.35, 0.5, 2.0, 100, 1500, 'A', 'B', 'C', 'D', 'E', 'components', 'elevation_ft', 'epa_radon_zone', 'fault_distance_km', 'fault_rupture_zone', 'ground_snow_load_psf', 'hail', 'hail_alley', 'hail_risk_score', 'high', 'low', 'max_hail_size_inches', 'mitigation_required', 'moderate', 'pga_2pct_50yr', 'radon', 'radon_risk_score', 'risk_level', 'seismic', 'seismic_risk_score', 'snow', 'snow_load_risk_score']

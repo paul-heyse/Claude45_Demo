@@ -1,0 +1,4 @@
+# file: /home/paul/Claude45_Demo/src/Claude45_Demo/market_analysis/employment.py
+# hypothesis_version: 6.140.2
+
+[0.0, 0.05, 0.1, 0.2, 0.3, 0.4, 0.5, 1.0, 1.5, 100.0, '3254', '3344', '3364', '5112', '5182', '5415', '6111', '6112', '6113', '621', '6216', '622', 'education', 'healthcare', 'manufacturing', 'score', 'sector_cagr', 'sector_lq', 'sector_scores', 'tech', 'weights']

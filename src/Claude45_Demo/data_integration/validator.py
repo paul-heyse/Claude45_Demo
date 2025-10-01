@@ -388,23 +388,38 @@ def detect_outliers(
                 )
 
     elif method == "zscore":
-        # Z-score method
-        mean = sum(values) / len(values)
-        variance = sum((x - mean) ** 2 for x in values) / len(values)
-        std_dev = variance**0.5
+        remaining = list(enumerate(values))
+        iterations = 0
+        max_iterations = len(values)
 
-        if std_dev == 0:
-            logger.warning("Zero standard deviation, cannot compute z-scores")
-            return []
+        while remaining and iterations < max_iterations:
+            iterations += 1
+            sample = [value for _, value in remaining]
+            mean = sum(sample) / len(sample)
+            variance = sum((x - mean) ** 2 for x in sample) / len(sample)
+            std_dev = variance**0.5
 
-        for i, value in enumerate(values):
-            z_score = abs((value - mean) / std_dev)
-            if z_score > threshold:
-                outlier_indices.append(i)
-                logger.warning(
-                    f"Outlier detected at index {i}: {value} "
-                    f"(z-score: {z_score:.2f}, threshold: {threshold})"
-                )
+            if std_dev == 0:
+                logger.warning("Zero standard deviation, cannot compute z-scores")
+                break
+
+            iteration_outliers = []
+            for index, value in remaining:
+                z_score = abs((value - mean) / std_dev)
+                if z_score > threshold:
+                    outlier_indices.append(index)
+                    iteration_outliers.append((index, value))
+                    logger.warning(
+                        f"Outlier detected at index {index}: {value} "
+                        f"(z-score: {z_score:.2f}, threshold: {threshold})"
+                    )
+
+            if not iteration_outliers:
+                break
+
+            remaining = [item for item in remaining if item not in iteration_outliers]
+
+        outlier_indices.sort()
 
     else:
         raise ValueError(f"Unknown outlier detection method: {method}")
