@@ -12,6 +12,7 @@ from .cache_config import (
     PrefetchSettings,
     SQLiteSettings,
 )
+from .cache_warmer import CacheWarmer, PrefetchScheduler, WarmingProgress, WarmingResult
 from .census import CensusConnector
 from .config import ConfigManager
 from .exceptions import (
@@ -46,6 +47,10 @@ __all__ = [
     "CompressionSettings",
     "PrefetchSettings",
     "MonitoringSettings",
+    "CacheWarmer",
+    "PrefetchScheduler",
+    "WarmingProgress",
+    "WarmingResult",
     "CensusConnector",
     "ConfigManager",
     "LEHDLODESConnector",
