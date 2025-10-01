@@ -12,11 +12,16 @@ from .cache_config import (
     PrefetchSettings,
     SQLiteSettings,
 )
-from .cache_stats import CacheStatistics, LatencyMetrics, SourceStatistics, TierStatistics
+from .cache_stats import (
+    CacheStatistics,
+    LatencyMetrics,
+    SourceStatistics,
+    TierStatistics,
+)
 from .cache_warmer import CacheWarmer, PrefetchScheduler, WarmingProgress, WarmingResult
 from .census import CensusConnector
-from .memory_cache import MemoryCache
 from .config import ConfigManager
+from .epa_aqs import EPAAQSConnector
 from .exceptions import (
     AkerPlatformError,
     CacheError,
@@ -27,6 +32,8 @@ from .exceptions import (
 )
 from .irs import IRSMigrationLoader
 from .lodes import LEHDLODESConnector
+from .memory_cache import MemoryCache
+from .nasa_firms import NASAFIRMSConnector
 from .rate_limiter import RateLimitConfig, RateLimiter, get_rate_limiter
 from .validator import (
     DataValidator,
@@ -62,6 +69,8 @@ __all__ = [
     "ConfigManager",
     "LEHDLODESConnector",
     "IRSMigrationLoader",
+    "EPAAQSConnector",
+    "NASAFIRMSConnector",
     "RateLimiter",
     "RateLimitConfig",
     "get_rate_limiter",

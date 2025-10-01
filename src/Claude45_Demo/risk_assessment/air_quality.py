@@ -8,21 +8,44 @@ from __future__ import annotations
 import logging
 from typing import Any
 
+from Claude45_Demo.data_integration.epa_aqs import EPAAQSConnector
+
 logger = logging.getLogger(__name__)
 
 
 class AirQualityAnalyzer:
     """Analyze air quality risk for property locations."""
 
-    def __init__(self) -> None:
-        """Initialize air quality analyzer."""
+    def __init__(
+        self,
+        epa_email: str | None = None,
+        epa_api_key: str | None = None,
+    ) -> None:
+        """
+        Initialize air quality analyzer.
+
+        Args:
+            epa_email: EPA AQS registered email (optional, for production use)
+            epa_api_key: EPA AQS API key (optional, for production use)
+        """
         logger.info("AirQualityAnalyzer initialized")
+
+        # Initialize EPA connector if credentials provided
+        self.epa_connector = None
+        if epa_email and epa_api_key:
+            self.epa_connector = EPAAQSConnector(
+                email=epa_email,
+                api_key=epa_api_key,
+            )
+            logger.info("EPA AQS connector initialized for production use")
 
     def analyze_pm25(
         self,
         latitude: float,
         longitude: float,
         year: int,
+        state_code: str | None = None,
+        county_code: str | None = None,
         mock_aqs: dict[str, Any] | None = None,
     ) -> dict[str, Any]:
         """Analyze PM2.5 air quality using EPA AQS data.
@@ -31,17 +54,61 @@ class AirQualityAnalyzer:
             latitude: Location latitude
             longitude: Location longitude
             year: Year to analyze
+            state_code: Optional 2-digit state FIPS code (required for production)
+            county_code: Optional 3-digit county FIPS code (required for production)
             mock_aqs: Optional mock AQS data for testing
 
         Returns:
             Dictionary with PM2.5 metrics and risk score
         """
-        if mock_aqs is None:
-            raise ValueError("Production EPA AQS API not yet implemented")
+        # Try production API first if configured
+        if mock_aqs is None and self.epa_connector and state_code and county_code:
+            try:
+                epa_data = self.epa_connector.get_pm25_annual_data(
+                    state_code=state_code,
+                    county_code=county_code,
+                    year=year,
+                )
 
-        annual_mean = mock_aqs["annual_mean_pm25"]
-        days_over_35 = mock_aqs["days_over_35"]
-        wildfire_smoke_days = mock_aqs["wildfire_smoke_days"]
+                if epa_data["data_available"]:
+                    annual_mean = epa_data["annual_mean_pm25"]
+                    days_over_35 = epa_data["days_over_35"]
+                    # Note: EPA AQS doesn't directly provide smoke days
+                    wildfire_smoke_days = 0  # Would need separate NOAA HMS call
+
+                    logger.info(
+                        f"Retrieved PM2.5 data from EPA AQS for {state_code}-{county_code}: "
+                        f"mean={annual_mean} μg/m³"
+                    )
+                else:
+                    logger.warning(
+                        f"No EPA AQS data available for {state_code}-{county_code} {year}"
+                    )
+                    # Fall through to require mock data
+                    raise ValueError("No EPA data available")
+
+            except Exception as e:
+                logger.warning(
+                    f"EPA AQS query failed: {e}, falling back to mock data requirement"
+                )
+                if mock_aqs is None:
+                    raise ValueError(
+                        "Production EPA AQS API failed and no mock data provided. "
+                        "Ensure state_code and county_code are correct, or provide mock_aqs."
+                    ) from e
+                annual_mean = mock_aqs["annual_mean_pm25"]
+                days_over_35 = mock_aqs["days_over_35"]
+                wildfire_smoke_days = mock_aqs["wildfire_smoke_days"]
+        elif mock_aqs is not None:
+            # Use mock data for testing
+            annual_mean = mock_aqs["annual_mean_pm25"]
+            days_over_35 = mock_aqs["days_over_35"]
+            wildfire_smoke_days = mock_aqs["wildfire_smoke_days"]
+        else:
+            raise ValueError(
+                "Production EPA AQS API requires epa_email, epa_api_key, state_code, and county_code. "
+                "Alternatively, provide mock_aqs for testing."
+            )
 
         # Score based on annual mean PM2.5 (EPA standard: 12 μg/m³)
         if annual_mean >= 15:  # Exceeds WHO guideline

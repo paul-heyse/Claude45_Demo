@@ -10,6 +10,8 @@ from __future__ import annotations
 import logging
 from typing import Any
 
+from Claude45_Demo.data_integration.nasa_firms import NASAFIRMSConnector
+
 logger = logging.getLogger(__name__)
 
 
@@ -19,9 +21,20 @@ class WildfireRiskAnalyzer:
     # High-risk fuel types (timber and brush have high fire intensity)
     HIGH_RISK_FUELS = {"timber", "brush", "chaparral", "conifer"}
 
-    def __init__(self) -> None:
-        """Initialize wildfire risk analyzer."""
+    def __init__(self, firms_api_key: str | None = None) -> None:
+        """
+        Initialize wildfire risk analyzer.
+
+        Args:
+            firms_api_key: NASA FIRMS API key (optional, for production use)
+        """
         logger.info("WildfireRiskAnalyzer initialized")
+
+        # Initialize FIRMS connector if key provided
+        self.firms_connector = None
+        if firms_api_key:
+            self.firms_connector = NASAFIRMSConnector(api_key=firms_api_key)
+            logger.info("NASA FIRMS connector initialized for production use")
 
     def assess_wildfire_hazard_potential(
         self,
@@ -114,6 +127,9 @@ class WildfireRiskAnalyzer:
     ) -> dict[str, Any]:
         """Assess historical fire perimeter proximity.
 
+        Note: This uses NASA FIRMS for recent fire activity (last 7-10 days).
+        For historical fire perimeters (>10 days), USGS/NIFC MTBS data would be needed.
+
         Args:
             latitude: Location latitude
             longitude: Location longitude
@@ -123,8 +139,66 @@ class WildfireRiskAnalyzer:
         Returns:
             Dictionary with fire counts, nearest fire distance, history score
         """
+        # Try FIRMS API for recent activity if available
+        if mock_history is None and self.firms_connector:
+            try:
+                firms_data = self.firms_connector.analyze_fire_activity(
+                    latitude=latitude,
+                    longitude=longitude,
+                    radius_km=10,
+                    lookback_days=7,  # FIRMS limitation
+                )
+
+                if firms_data["fire_activity_detected"]:
+                    # Convert FIRMS hotspots to fire history format
+                    fires_within_10km = firms_data["hotspot_count"]
+                    nearest_large_fire_km = firms_data["nearest_hotspot_km"]
+
+                    logger.info(
+                        f"NASA FIRMS detected {fires_within_10km} recent hotspots "
+                        f"within 10km of ({latitude}, {longitude})"
+                    )
+
+                    # Calculate score based on recent activity
+                    if fires_within_10km == 0:
+                        fire_history_score = 10
+                    elif fires_within_10km <= 2:
+                        fire_history_score = 40
+                    elif fires_within_10km <= 5:
+                        fire_history_score = 70
+                    else:
+                        fire_history_score = 90
+
+                    recent_fire_activity = True
+
+                    return {
+                        "fires_within_10km": fires_within_10km,
+                        "nearest_large_fire_km": nearest_large_fire_km,
+                        "fire_history_score": fire_history_score,
+                        "recent_fire_activity": recent_fire_activity,
+                        "lookback_years": 1,  # FIRMS only provides recent data
+                        "data_source": "NASA_FIRMS_NRT",
+                        "note": "Recent hotspot data only (7 days). Historical perimeters require MTBS.",
+                    }
+                else:
+                    # No recent activity, but fall through for historical analysis
+                    logger.info("No recent fire activity detected via FIRMS")
+
+            except Exception as e:
+                logger.warning(
+                    f"NASA FIRMS query failed: {e}, falling back to mock data"
+                )
+                if mock_history is None:
+                    raise ValueError(
+                        "Production NASA FIRMS failed and no mock data provided. "
+                        "For historical fire perimeters (>10 days), MTBS API integration needed."
+                    ) from e
+
         if mock_history is None:
-            raise ValueError("Production USGS/NIFC fire API not yet implemented")
+            raise ValueError(
+                "Historical fire perimeter data (MTBS) not yet implemented. "
+                "Provide mock_history or use FIRMS connector for recent activity."
+            )
 
         # Count fires within 10km
         fires_within_10km = sum(1 for fire in mock_history if fire["distance_km"] <= 10)
