@@ -54,30 +54,48 @@ Aker Companies invests in residential communities across Colorado, Utah, and Ida
 - Easy to parallelize work across developers
 - Simple deployment (one package, one CLI)
 
-### Data Layer: API Connectors + SQLite Cache
+### Data Layer: Multi-Tier Caching Architecture
 
-**Decision:** Abstract `APIConnector` base class with concrete implementations per source; SQLite for local caching.
+**Decision:** Three-tier caching system: in-memory LRU (hot), SQLite (warm), optional Redis (distributed).
 
 ```
 data_integration/
   ├── base.py          # Abstract connector, cache interface
+  ├── cache.py         # CacheManager (SQLite backend)
+  ├── memory_cache.py  # In-memory LRU cache layer
+  ├── cache_config.py  # TTL policies per data source
   ├── census.py        # Census ACS, BPS, BFS
   ├── bls.py           # BLS CES, LAUS, QCEW
   ├── geo.py           # OSM, GTFS, USGS
-  ├── risk.py          # FEMA, EPA, NOAA
-  └── cache.py         # SQLite cache with TTL
+  └── risk.py          # FEMA, EPA, NOAA
 ```
+
+**Cache Tier Strategy:**
+
+1. **Hot (In-Memory):** 256MB LRU cache, < 1ms latency, frequently accessed data
+2. **Warm (SQLite):** Unlimited size, < 10ms latency, persistent across runs
+3. **Cold (API):** 200-2000ms latency, rate-limited, fallback only
+
+**TTL Policies by Data Source:**
+
+- **Static data (365 days):** Census ACS 5-year, TIGER shapefiles, ASCE 7 maps
+- **Semi-static (30 days):** Building permits, QCEW employment, BEA GDP
+- **Dynamic (7 days):** BLS CES, LAUS unemployment, business formations
+- **Real-time (1 hour):** Air quality, weather, traffic (future)
 
 **Alternatives considered:**
 
-- Redis cache: Requires separate service; SQLite is sufficient for single-user
-- Direct pandas DataFrames: No persistence; would re-fetch on every run
+- Redis-only cache: Requires separate service; SQLite sufficient for MVP
+- No in-memory layer: Would hit SQLite on every request (10ms overhead)
 - Postgres: Heavier than needed; harder to distribute/deploy
 
 **Rationale:**
 
-- API rate limits make caching essential (Census: 500 req/day)
+- API rate limits make caching essential (Census: 500 req/day, BLS: 50 req/10s)
+- Multi-tier balances performance (in-memory) with persistence (SQLite)
 - SQLite is zero-config, portable, fast for read-heavy workloads
+- In-memory LRU handles hot data (common markets) with sub-millisecond access
+- TTL differentiation prevents stale data while maximizing cache efficiency
 - Abstract base class enables easy mocking for tests
 - Each connector encodes source-specific quirks (auth, pagination, retries)
 

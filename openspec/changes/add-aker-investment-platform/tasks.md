@@ -114,15 +114,28 @@
 - [x] 9.9 Document test strategy and coverage
 - [x] 9.10 Set up continuous integration (pytest, linting)
 
-## 10. Documentation & Deployment
+## 10. Advanced Caching Implementation
 
-- [ ] 10.1 Write comprehensive README with quickstart
-- [ ] 10.2 Create API documentation for all public modules
-- [ ] 10.3 Document data source catalog with update frequencies
-- [ ] 10.4 Write deployment guide (environment setup, API keys)
-- [ ] 10.5 Create architecture diagram and data flow charts
-- [ ] 10.6 Document scoring methodology and validation
-- [ ] 10.7 Build example notebooks (Jupyter) for common workflows
-- [ ] 10.8 Create troubleshooting guide
-- [ ] 10.9 Write contribution guidelines
-- [ ] 10.10 Prepare handoff documentation for Aker team
+- [ ] 10.1 Implement in-memory LRU cache layer (hot cache, 256MB limit)
+- [ ] 10.2 Create cache configuration system (TTL policies per source)
+- [ ] 10.3 Build cache warming and prefetching system
+- [ ] 10.4 Implement cache statistics and monitoring
+- [ ] 10.5 Add cache inspection and debugging CLI commands
+- [ ] 10.6 Implement cache compression for large responses (>10KB)
+- [ ] 10.7 Add version-based cache invalidation
+- [ ] 10.8 Build cache benchmarking and profiling tools
+- [ ] 10.9 Implement graceful cache failure handling
+- [ ] 10.10 Add distributed cache support (optional Redis backend)
+
+## 11. Documentation & Deployment
+
+- [ ] 11.1 Write comprehensive README with quickstart
+- [ ] 11.2 Create API documentation for all public modules
+- [ ] 11.3 Document data source catalog with update frequencies
+- [ ] 11.4 Write deployment guide (environment setup, API keys)
+- [ ] 11.5 Create architecture diagram and data flow charts
+- [ ] 11.6 Document scoring methodology and validation
+- [ ] 11.7 Build example notebooks (Jupyter) for common workflows
+- [ ] 11.8 Create troubleshooting guide
+- [ ] 11.9 Write contribution guidelines
+- [ ] 11.10 Prepare handoff documentation for Aker team
