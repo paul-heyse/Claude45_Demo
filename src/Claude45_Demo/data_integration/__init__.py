@@ -12,8 +12,10 @@ from .cache_config import (
     PrefetchSettings,
     SQLiteSettings,
 )
+from .cache_stats import CacheStatistics, LatencyMetrics, SourceStatistics, TierStatistics
 from .cache_warmer import CacheWarmer, PrefetchScheduler, WarmingProgress, WarmingResult
 from .census import CensusConnector
+from .memory_cache import MemoryCache
 from .config import ConfigManager
 from .exceptions import (
     AkerPlatformError,
@@ -47,10 +49,15 @@ __all__ = [
     "CompressionSettings",
     "PrefetchSettings",
     "MonitoringSettings",
+    "CacheStatistics",
+    "TierStatistics",
+    "SourceStatistics",
+    "LatencyMetrics",
     "CacheWarmer",
     "PrefetchScheduler",
     "WarmingProgress",
     "WarmingResult",
+    "MemoryCache",
     "CensusConnector",
     "ConfigManager",
     "LEHDLODESConnector",
