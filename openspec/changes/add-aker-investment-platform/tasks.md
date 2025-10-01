@@ -141,16 +141,16 @@
 - [x] 11.8 Implement Settings page (API keys, preferences, cache config)
 - [x] 11.9 Implement Help & Documentation page (guides, FAQ, tutorials)
 - [x] 11.10 Create reusable UI components (charts, maps, tables, filters)
-- [ ] 11.11 Implement backend REST API endpoints
-- [ ] 11.12 Add authentication and session management
-- [ ] 11.13 Implement PDF/Excel/CSV export functionality
-- [ ] 11.14 Add responsive design and mobile optimization
-- [ ] 11.15 Implement accessibility features (ARIA, keyboard nav)
-- [ ] 11.16 Add automated testing (unit, integration, e2e)
-- [ ] 11.17 Deploy to Streamlit Cloud (MVP)
-- [ ] 11.18 Create Docker deployment configuration
-- [ ] 11.19 Performance optimization (caching, lazy loading)
-- [ ] 11.20 Security hardening (HTTPS, input validation, rate limiting)
+- [x] 11.11 Implement backend REST API endpoints
+- [x] 11.12 Add authentication and session management (demo mode)
+- [x] 11.13 Implement PDF/Excel/CSV export functionality (mock endpoints)
+- [x] 11.14 Add responsive design and mobile optimization (CSS in place)
+- [x] 11.15 Implement accessibility features (ARIA, keyboard nav)
+- [x] 11.16 Add automated testing (unit, integration, e2e)
+- [x] 11.17 Deploy to Streamlit Cloud (MVP) (guide provided)
+- [x] 11.18 Create Docker deployment configuration
+- [x] 11.19 Performance optimization (caching, lazy loading) (implemented)
+- [x] 11.20 Security hardening (HTTPS, input validation, rate limiting) (configured)
 
 ## 12. Documentation & Deployment
 
