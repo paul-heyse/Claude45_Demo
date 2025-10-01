@@ -220,6 +220,8 @@ markers = [
     "validation: marks tests that validate against known good data",
     "benchmark: marks tests as performance benchmarks",
     "load: marks tests as load tests",
+    "e2e: marks tests as end-to-end workflow tests",
+    "real_api: marks tests that require real API credentials",
 ]
 
 [tool.coverage.run]
