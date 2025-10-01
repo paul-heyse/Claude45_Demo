@@ -37,9 +37,37 @@ dependencies = [
     "scikit-learn",
     "scipy",
 
-    # Visualization
+    # Visualization (Core + Web GUI)
     "matplotlib",
     "seaborn",
+    "plotly",  # Interactive charts for web GUI
+
+    # Web GUI Framework
+    "streamlit",
+    "streamlit-extras",
+
+    # Web GUI Data Tables
+    "streamlit-aggrid",
+
+    # Web GUI Maps
+    "folium",
+    "streamlit-folium",
+
+    # Report Generation & Export
+    "reportlab",  # PDF generation
+    "openpyxl",  # Excel export
+    "xlsxwriter",  # Alternative Excel export
+    "weasyprint",  # HTML to PDF conversion
+
+    # Backend API (FastAPI)
+    "fastapi",
+    "uvicorn[standard]",
+    "python-jose[cryptography]",  # JWT tokens
+    "passlib[bcrypt]",  # Password hashing
+    "python-multipart",  # Form data
+
+    # Authentication
+    "streamlit-authenticator",
 
     # CLI interface
     "click",
@@ -51,6 +79,10 @@ dependencies = [
 
     # Data validation
     "pydantic",
+    "pydantic-settings",
+
+    # Utilities
+    "pytz",  # Timezone handling
 ]
 
 [project.optional-dependencies]
@@ -60,6 +92,11 @@ dev = [
     "pytest-cov",
     "pytest-asyncio",
     "pytest-mock",
+    "httpx",  # For FastAPI testing
+
+    # Code quality
+    "mutmut",  # Mutation testing
+    "hypothesis",  # Property-based testing
 
     # Linting and formatting
     "ruff",
@@ -79,8 +116,14 @@ notebook = [
     "ipywidgets",
 ]
 
+gui = [
+    # Optional GUI enhancements
+    "altair",  # Alternative visualization library
+    "pydeck",  # Advanced 3D mapping
+]
+
 all = [
-    "Claude45_Demo[dev,notebook]",
+    "Claude45_Demo[dev,notebook,gui]",
 ]
 
 [project.scripts]
@@ -138,6 +181,13 @@ module = [
     "shapely.*",
     "matplotlib.*",
     "seaborn.*",
+    "plotly.*",
+    "streamlit.*",
+    "folium.*",
+    "reportlab.*",
+    "openpyxl.*",
+    "xlsxwriter.*",
+    "weasyprint.*",
 ]
 ignore_missing_imports = true
 
@@ -168,6 +218,8 @@ markers = [
     "slow: marks tests as slow (deselect with '-m \"not slow\"')",
     "integration: marks tests as integration tests requiring API calls",
     "validation: marks tests that validate against known good data",
+    "benchmark: marks tests as performance benchmarks",
+    "load: marks tests as load tests",
 ]
 
 [tool.coverage.run]
