@@ -6,6 +6,9 @@ import logging
 from typing import Any, Optional
 
 from Claude45_Demo.data_integration.epa_radon import EPARadonConnector
+from Claude45_Demo.data_integration.noaa_spc import NOAASPCConnector
+from Claude45_Demo.data_integration.prism_snow import PRISMSnowConnector
+from Claude45_Demo.data_integration.usgs_nshm import USGSNSHMConnector
 
 logger = logging.getLogger(__name__)
 
@@ -13,13 +16,26 @@ logger = logging.getLogger(__name__)
 class HazardOverlayAnalyzer:
     """Analyze multiple hazard types: seismic, hail, wind, radon, snow load."""
 
-    def __init__(self, *, radon_connector: Optional[EPARadonConnector] = None) -> None:
+    def __init__(
+        self,
+        *,
+        radon_connector: Optional[EPARadonConnector] = None,
+        seismic_connector: Optional[USGSNSHMConnector] = None,
+        hail_connector: Optional[NOAASPCConnector] = None,
+        snow_connector: Optional[PRISMSnowConnector] = None,
+    ) -> None:
         """Initialize hazard overlay analyzer.
 
         Args:
             radon_connector: Optional EPA Radon connector for real data
+            seismic_connector: Optional USGS NSHM connector for seismic data
+            hail_connector: Optional NOAA SPC connector for hail data
+            snow_connector: Optional PRISM connector for snow load data
         """
         self.radon_connector = radon_connector
+        self.seismic_connector = seismic_connector
+        self.hail_connector = hail_connector
+        self.snow_connector = snow_connector
         logger.info("HazardOverlayAnalyzer initialized")
 
     def assess_seismic_risk(
@@ -27,6 +43,7 @@ class HazardOverlayAnalyzer:
         latitude: float,
         longitude: float,
         mock_seismic: dict[str, Any] | None = None,
+        fault_distance_km: float | None = None,
     ) -> dict[str, Any]:
         """Assess earthquake risk using USGS NSHM.
 
@@ -34,15 +51,37 @@ class HazardOverlayAnalyzer:
             latitude: Location latitude
             longitude: Location longitude
             mock_seismic: Optional mock seismic data for testing
+            fault_distance_km: Optional distance to nearest active fault
 
         Returns:
             Dictionary with PGA, seismic design category, risk score
         """
+        # Try to use real USGS NSHM connector first
+        if self.seismic_connector is not None and mock_seismic is None:
+            try:
+                seismic_data = self.seismic_connector.assess_earthquake_risk(
+                    latitude, longitude, fault_distance_km=fault_distance_km
+                )
+
+                return {
+                    "pga_2pct_50yr": seismic_data["pga"],
+                    "seismic_design_category": seismic_data["seismic_design_category"],
+                    "seismic_risk_score": seismic_data["adjusted_risk_score"],
+                    "fault_distance_km": seismic_data.get("fault_distance_km"),
+                    "fault_rupture_zone": seismic_data.get("fault_rupture_zone", False),
+                    "data_source": "USGS NSHM",
+                }
+            except Exception as e:
+                logger.warning(f"USGS NSHM connector failed: {e}, using mock data")
+
+        # Fall back to mock data
         if mock_seismic is None:
-            raise ValueError("Production USGS NSHM API not yet implemented")
+            raise ValueError(
+                "Production USGS NSHM API not configured and no mock data provided"
+            )
 
         pga = mock_seismic["pga_2pct_50yr"]  # Peak Ground Acceleration
-        fault_distance_km = mock_seismic.get("fault_distance_km")
+        fault_dist = mock_seismic.get("fault_distance_km", fault_distance_km)
 
         # Map PGA to seismic design category (ASCE 7)
         if pga >= 0.5:
@@ -62,7 +101,7 @@ class HazardOverlayAnalyzer:
             risk_score = 10
 
         # Adjust for fault proximity
-        fault_rupture_zone = fault_distance_km is not None and fault_distance_km < 0.1
+        fault_rupture_zone = fault_dist is not None and fault_dist < 0.1
         if fault_rupture_zone:
             risk_score = min(100, risk_score + 15)
 
@@ -70,7 +109,7 @@ class HazardOverlayAnalyzer:
             "pga_2pct_50yr": pga,
             "seismic_design_category": sdc,
             "seismic_risk_score": risk_score,
-            "fault_distance_km": fault_distance_km,
+            "fault_distance_km": fault_dist,
             "fault_rupture_zone": fault_rupture_zone,
         }
 
@@ -79,6 +118,8 @@ class HazardOverlayAnalyzer:
         latitude: float,
         longitude: float,
         mock_hail: dict[str, Any] | None = None,
+        state_fips: str | None = None,
+        county_fips: str | None = None,
     ) -> dict[str, Any]:
         """Assess hail risk using NOAA SPC climatology.
 
@@ -86,12 +127,39 @@ class HazardOverlayAnalyzer:
             latitude: Location latitude
             longitude: Location longitude
             mock_hail: Optional mock hail data for testing
+            state_fips: Optional state FIPS code
+            county_fips: Optional county FIPS code
 
         Returns:
             Dictionary with hail events, probability, risk score
         """
+        # Try to use real NOAA SPC connector first
+        if (
+            self.hail_connector is not None
+            and mock_hail is None
+            and state_fips is not None
+            and county_fips is not None
+        ):
+            try:
+                hail_data = self.hail_connector.assess_hail_risk(
+                    latitude, longitude, state_fips, county_fips
+                )
+
+                return {
+                    "hail_events_per_decade": hail_data["hail_events_per_decade"],
+                    "max_hail_size_inches": hail_data["max_hail_size_inches"],
+                    "hail_risk_score": hail_data["risk_score"],
+                    "hail_alley": hail_data["hail_alley"],
+                    "data_source": "NOAA SPC",
+                }
+            except Exception as e:
+                logger.warning(f"NOAA SPC connector failed: {e}, using mock data")
+
+        # Fall back to mock data
         if mock_hail is None:
-            raise ValueError("Production NOAA SPC API not yet implemented")
+            raise ValueError(
+                "Production NOAA SPC API not configured and no mock data provided"
+            )
 
         events_per_decade = mock_hail["hail_events_1inch_plus"]
         max_hail_size_inches = mock_hail["max_hail_size_inches"]
@@ -194,6 +262,7 @@ class HazardOverlayAnalyzer:
         longitude: float,
         elevation_ft: float,
         mock_snow: dict[str, Any] | None = None,
+        state: str = "CO",
     ) -> dict[str, Any]:
         """Assess snow load requirements using ASCE 7 and PRISM data.
 
@@ -202,12 +271,35 @@ class HazardOverlayAnalyzer:
             longitude: Location longitude
             elevation_ft: Site elevation in feet
             mock_snow: Optional mock snow data for testing
+            state: State code (CO, UT, ID)
 
         Returns:
             Dictionary with ground snow load, cost premium, risk score
         """
+        # Try to use real PRISM connector first
+        if self.snow_connector is not None and mock_snow is None:
+            try:
+                snow_data = self.snow_connector.assess_snow_risk(
+                    latitude, longitude, elevation_ft, state
+                )
+
+                return {
+                    "ground_snow_load_psf": snow_data["ground_snow_load_psf"],
+                    "elevation_ft": elevation_ft,
+                    "snow_load_risk_score": snow_data["risk_score"],
+                    "structural_cost_premium_pct": snow_data[
+                        "structural_cost_premium_pct"
+                    ],
+                    "data_source": "PRISM/ASCE 7",
+                }
+            except Exception as e:
+                logger.warning(f"PRISM connector failed: {e}, using mock data")
+
+        # Fall back to mock data
         if mock_snow is None:
-            raise ValueError("Production PRISM/ASCE 7 API not yet implemented")
+            raise ValueError(
+                "Production PRISM/ASCE 7 API not configured and no mock data provided"
+            )
 
         ground_snow_load_psf = mock_snow["ground_snow_load_psf"]
 
