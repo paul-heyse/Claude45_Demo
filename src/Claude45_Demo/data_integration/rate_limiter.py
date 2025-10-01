@@ -167,30 +167,27 @@ class RateLimiter:
             self.record_request(api_name)
             return 0.0
 
+        wait_seconds: float = 0.0
+
         with self._lock:
             config = self._configs[api_name]
 
-            # Clean up old requests first
             self._cleanup_old_requests(api_name, config.time_window_seconds)
-
             current_count = self._get_current_request_count(api_name)
 
             if current_count < config.max_requests:
-                # Can proceed immediately
-                self.record_request(api_name)
+                self._request_history[api_name].append(datetime.now(timezone.utc))
                 return 0.0
 
-            # Need to wait for oldest request to expire
             history = self._request_history[api_name]
             if not history:
-                self.record_request(api_name)
+                self._request_history[api_name].append(datetime.now(timezone.utc))
                 return 0.0
 
             oldest_request = history[0]
             window_end = oldest_request + timedelta(seconds=config.time_window_seconds)
             now = datetime.now(timezone.utc)
-
-            wait_seconds = (window_end - now).total_seconds()
+            wait_seconds = max(0.0, (window_end - now).total_seconds())
 
             if wait_seconds > max_wait_seconds:
                 raise RuntimeError(
@@ -199,15 +196,14 @@ class RateLimiter:
                     f"Consider caching or spreading requests."
                 )
 
-            if wait_seconds > 0:
-                logger.info(
-                    f"Rate limit throttling {api_name}: waiting {wait_seconds:.2f}s"
-                )
-                time.sleep(wait_seconds)
+        if wait_seconds > 0:
+            logger.info(
+                f"Rate limit throttling {api_name}: waiting {wait_seconds:.2f}s"
+            )
+            time.sleep(wait_seconds)
 
-        # After waiting, record the request
         self.record_request(api_name)
-        return max(wait_seconds, 0.0)
+        return wait_seconds
 
     def get_usage_stats(self, api_name: str) -> Dict[str, int | float | None]:
         """
