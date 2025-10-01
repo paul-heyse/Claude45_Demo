@@ -37,8 +37,14 @@ PET_FEATURES = {
 }
 
 
-def score_outdoor_brand(features: Dict[str, bool], unique_features: Iterable[str] | None = None) -> int:
-    score = sum(points for feature, points in OUTDOOR_FEATURE_POINTS.items() if features.get(feature))
+def score_outdoor_brand(
+    features: Dict[str, bool], unique_features: Iterable[str] | None = None
+) -> int:
+    score = sum(
+        points
+        for feature, points in OUTDOOR_FEATURE_POINTS.items()
+        if features.get(feature)
+    )
     bonus = 0
     if unique_features:
         bonus = min(20, len(list(unique_features)) * 5)
@@ -58,20 +64,31 @@ def score_ev_readiness(
     base_score = coverage * 100
     if ev_ready_conduit:
         base_score = max(base_score, 60)
-    if planned_retrofit_cost is not None and planned_retrofit_cost <= 1500 * total_stalls * 0.25:
+    if (
+        planned_retrofit_cost is not None
+        and planned_retrofit_cost <= 1500 * total_stalls * 0.25
+    ):
         base_score += 10
     return min(100, int(base_score)), f"EV stalls: {existing_ev_stalls}/{total_stalls}"
 
 
 def score_remote_work(features: Dict[str, bool], monetization_potential: bool) -> int:
-    score = sum(points for feature, points in REMOTE_WORK_FEATURES.items() if features.get(feature))
+    score = sum(
+        points
+        for feature, points in REMOTE_WORK_FEATURES.items()
+        if features.get(feature)
+    )
     if monetization_potential:
         score += 10
     return min(100, score)
 
 
-def score_pet_friendliness(features: Dict[str, bool], pet_policy: Dict[str, bool]) -> int:
-    score = sum(points for feature, points in PET_FEATURES.items() if features.get(feature))
+def score_pet_friendliness(
+    features: Dict[str, bool], pet_policy: Dict[str, bool]
+) -> int:
+    score = sum(
+        points for feature, points in PET_FEATURES.items() if features.get(feature)
+    )
     if pet_policy.get("no_breed_restrictions", False):
         score += 10
     if pet_policy.get("pet_rent", 0) > 0:

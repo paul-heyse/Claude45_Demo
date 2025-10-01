@@ -17,7 +17,9 @@ class ROIResult:
 class CapexEstimator:
     """Estimate ROI for various value-add improvement scopes."""
 
-    def estimate_interior_upgrade(self, unit_sqft: float, scope: Dict[str, bool]) -> ROIResult:
+    def estimate_interior_upgrade(
+        self, unit_sqft: float, scope: Dict[str, bool]
+    ) -> ROIResult:
         base_cost = 0.0
         if scope.get("lvp", True):
             base_cost += unit_sqft * 5.0
@@ -51,7 +53,9 @@ class CapexEstimator:
         rent_premium = enhancements.get("rent_premium", 30)
         retention_lift = enhancements.get("retention_lift_bps", 150) / 10000
         rent_lift_dollars = rent_premium * 12
-        avoided_turnover = retention_lift * 1_200_000  # Example NOI impact for 200 units
+        avoided_turnover = (
+            retention_lift * 1_200_000
+        )  # Example NOI impact for 200 units
         payback = cost / (rent_lift_dollars + avoided_turnover / 5)
         return ROIResult(
             capex_per_unit=round(cost / enhancements.get("unit_count", 200), 2),
@@ -82,7 +86,11 @@ class CapexEstimator:
         utility_savings = data.get("utility_savings_per_month", 18)
         marketing_uplift = data.get("marketing_uplift_rent", 15)
         total_monthly_benefit = utility_savings + marketing_uplift
-        payback = project_cost / (total_monthly_benefit * 12) if total_monthly_benefit else float("inf")
+        payback = (
+            project_cost / (total_monthly_benefit * 12)
+            if total_monthly_benefit
+            else float("inf")
+        )
         return ROIResult(
             capex_per_unit=project_cost,
             rent_lift=marketing_uplift,
@@ -90,7 +98,9 @@ class CapexEstimator:
             notes="Sustainability improvements support green positioning",
         )
 
-    def estimate_rent_lift_from_scope(self, archetype: str, scope_intensity: str) -> tuple[int, int]:
+    def estimate_rent_lift_from_scope(
+        self, archetype: str, scope_intensity: str
+    ) -> tuple[int, int]:
         baseline = {
             "value_add_light": (90, 180),
             "value_add_medium": (150, 250),

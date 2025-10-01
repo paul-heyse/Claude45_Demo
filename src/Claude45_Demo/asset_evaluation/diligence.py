@@ -59,7 +59,11 @@ class DiligenceChecklistBuilder:
                 ]
             )
         if include_ev:
-            sections.setdefault("amenities", []).append("EV retrofit feasibility and cost")
-        sections.setdefault("amenities", []).append("Bike storage / dog run feasibility study")
+            sections.setdefault("amenities", []).append(
+                "EV retrofit feasibility and cost"
+            )
+        sections.setdefault("amenities", []).append(
+            "Bike storage / dog run feasibility study"
+        )
 
         return sections

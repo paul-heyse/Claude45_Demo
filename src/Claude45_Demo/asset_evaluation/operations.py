@@ -36,11 +36,17 @@ class OperationsSupport:
         review_scores: Dict[str, float],
         before_after: Dict[str, float],
     ) -> NPSImpact:
-        current_nps = round(sum(review_scores.values()) / len(review_scores) if review_scores else 0)
+        current_nps = round(
+            sum(review_scores.values()) / len(review_scores) if review_scores else 0
+        )
         lift = before_after.get("after", 0) - before_after.get("before", 0)
         concession_reduction = int(max(0, lift / 10) * 25)
         pricing_power = int(max(0, lift / 10) * 20)
-        return NPSImpact(nps_score=current_nps, concession_reduction_bps=concession_reduction, pricing_power_bps=pricing_power)
+        return NPSImpact(
+            nps_score=current_nps,
+            concession_reduction_bps=concession_reduction,
+            pricing_power_bps=pricing_power,
+        )
 
     def recommend_programming_budget(
         self,
@@ -59,7 +65,9 @@ class OperationsSupport:
             "review_volume": "Increase 20% YoY",
             "referrals": "Track share of new leases from referrals",
         }
-        return ProgrammingBudget(annual_budget=budget, budget_per_door=base_per_door, kpis=kpis)
+        return ProgrammingBudget(
+            annual_budget=budget, budget_per_door=base_per_door, kpis=kpis
+        )
 
     def estimate_lease_up_velocity(
         self,

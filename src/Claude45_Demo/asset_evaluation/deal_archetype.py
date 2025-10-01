@@ -71,7 +71,11 @@ class DealArchetypeClassifier:
             payback = 4.0
             score = 85
             archetype = "value_add_light"
-        elif occupancy >= 0.7 and deferred_maintenance <= 6 and systems_condition in {"fair", "good"}:
+        elif (
+            occupancy >= 0.7
+            and deferred_maintenance <= 6
+            and systems_condition in {"fair", "good"}
+        ):
             scope = [
                 "Comprehensive unit renovation",
                 "Systems tune-up (HVAC, plumbing)",
