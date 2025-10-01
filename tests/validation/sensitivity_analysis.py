@@ -1,6 +1,5 @@
 """Sensitivity analysis for scoring weights."""
 
-import itertools
 from typing import Any
 
 from Claude45_Demo.scoring_engine import ScoringEngine
@@ -75,23 +74,27 @@ def run_sensitivity_analysis(
                 new_score = result["score"]
                 score_delta = new_score - base_score
 
-                component_results.append({
-                    "weight": round(new_weight, 2),
-                    "weight_delta": round(delta, 2),
-                    "score": round(new_score, 1),
-                    "score_delta": round(score_delta, 1),
-                    "percent_change": round((score_delta / base_score) * 100, 1)
-                    if base_score > 0
-                    else 0,
-                })
+                component_results.append(
+                    {
+                        "weight": round(new_weight, 2),
+                        "weight_delta": round(delta, 2),
+                        "score": round(new_score, 1),
+                        "score_delta": round(score_delta, 1),
+                        "percent_change": (
+                            round((score_delta / base_score) * 100, 1)
+                            if base_score > 0
+                            else 0
+                        ),
+                    }
+                )
             except ValueError:
                 continue
 
         if component_results:
             # Calculate average absolute impact
-            avg_impact = sum(
-                abs(r["score_delta"]) for r in component_results
-            ) / len(component_results)
+            avg_impact = sum(abs(r["score_delta"]) for r in component_results) / len(
+                component_results
+            )
 
             component_sensitivity[component] = {
                 "average_impact": round(avg_impact, 2),
@@ -196,4 +199,3 @@ if __name__ == "__main__":
     print("Running sensitivity analysis...")
     results = run_sensitivity_analysis(sample_scores)
     print(generate_sensitivity_report(results))
-

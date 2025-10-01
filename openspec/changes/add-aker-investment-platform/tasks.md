@@ -117,7 +117,7 @@
 ## 10. Advanced Caching Implementation
 
 - [x] 10.1 Implement in-memory LRU cache layer (hot cache, 256MB limit)
-- [ ] 10.2 Create cache configuration system (TTL policies per source)
+- [x] 10.2 Create cache configuration system (TTL policies per source)
 - [ ] 10.3 Build cache warming and prefetching system
 - [ ] 10.4 Implement cache statistics and monitoring
 - [ ] 10.5 Add cache inspection and debugging CLI commands

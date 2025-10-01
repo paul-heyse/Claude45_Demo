@@ -4,6 +4,14 @@ from .base import APIConnector
 from .bea import BEAConnector
 from .bls import BLSConnector
 from .cache import CacheManager
+from .cache_config import (
+    CacheConfig,
+    CompressionSettings,
+    MemorySettings,
+    MonitoringSettings,
+    PrefetchSettings,
+    SQLiteSettings,
+)
 from .census import CensusConnector
 from .config import ConfigManager
 from .exceptions import (
@@ -32,6 +40,12 @@ __all__ = [
     "BEAConnector",
     "BLSConnector",
     "CacheManager",
+    "CacheConfig",
+    "MemorySettings",
+    "SQLiteSettings",
+    "CompressionSettings",
+    "PrefetchSettings",
+    "MonitoringSettings",
     "CensusConnector",
     "ConfigManager",
     "LEHDLODESConnector",

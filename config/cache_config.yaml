@@ -1,0 +1,37 @@
+cache:
+  memory:
+    enable: true
+    size_mb: 256
+
+  sqlite:
+    enable: true
+    path: .cache/aker_platform.db
+
+  compression:
+    enable: true
+    threshold_kb: 10
+    level: 6
+
+  prefetch:
+    enabled: true
+    nearby_radius_miles: 50
+    max_parallel_requests: 5
+
+  monitoring:
+    log_cache_hits: true
+    alert_on_low_hit_rate: 0.5
+    alert_on_high_latency_ms: 20
+
+  defaults:
+    ttl: 30d
+
+  ttl_policies:
+    census_acs: 365d
+    census_permits: 30d
+    bls_ces: 7d
+    bls_qcew: 30d
+    irs_migration: 30d
+    epa_aqs: 1h
+    gtfs_transit: 30d
+    fema_flood: 90d
+    bea_gdp: 30d
