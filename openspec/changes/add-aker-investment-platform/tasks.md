@@ -169,3 +169,92 @@
 - [ ] 12.13 Write technical specifications for each module
 - [ ] 12.14 Document API endpoints and request/response formats
 - [ ] 12.15 Create data dictionary for all metrics and scores
+
+## 13. Advanced Testing - Security (Priority: CRITICAL - NEW)
+
+- [ ] 13.1 Implement API key validation tests (all 11 connectors)
+- [ ] 13.2 Create input sanitization tests (SQL injection, path traversal, command injection)
+- [ ] 13.3 Build credential masking tests (logs, error messages)
+- [ ] 13.4 Write penetration tests (OWASP Top 10 basics)
+- [ ] 13.5 Implement dependency security scanning (Bandit, Safety)
+- [ ] 13.6 Create authentication/authorization tests
+- [ ] 13.7 Write data protection tests (PII, encryption at rest)
+- [ ] 13.8 Implement API fuzzing tests
+
+## 14. Advanced Testing - Negative & Error Handling (Priority: CRITICAL - NEW)
+
+- [ ] 14.1 Create API error response tests (400, 401, 403, 404, 429, 500, 503)
+- [ ] 14.2 Implement invalid data handling tests (malformed JSON, missing fields, type mismatches)
+- [ ] 14.3 Build network failure tests (timeouts, connection errors, SSL failures)
+- [ ] 14.4 Write boundary condition tests (out-of-range coordinates, invalid FIPS codes)
+- [ ] 14.5 Create empty/null response tests
+- [ ] 14.6 Implement large payload tests (>10MB responses)
+- [ ] 14.7 Write unicode/encoding error tests
+- [ ] 14.8 Create partial response tests (interrupted streams)
+
+## 15. Advanced Testing - Load & Stress (Priority: HIGH - NEW)
+
+- [ ] 15.1 Implement concurrent user tests (10, 50, 100, 500 users)
+- [ ] 15.2 Create API rate limit compliance tests (EPA AQS: 5/sec, NASA FIRMS: 10/sec, USGS: 20/sec)
+- [ ] 15.3 Build cache performance under load tests (50+ concurrent requests)
+- [ ] 15.4 Write spike testing scenarios (0→100→0 users)
+- [ ] 15.5 Implement ramp-up testing (gradual load increase)
+- [ ] 15.6 Create stress testing scenarios (find breaking point)
+- [ ] 15.7 Write cache eviction behavior tests (100K+ entries)
+- [ ] 15.8 Implement SQLite contention tests (10+ concurrent writers)
+
+## 16. Advanced Testing - API Integration (Priority: HIGH - NEW)
+
+- [ ] 16.1 Create real API integration tests (all 11 APIs with live credentials)
+- [ ] 16.2 Implement API contract tests (schema validation against documented contracts)
+- [ ] 16.3 Build API change detection tests (schema drift, breaking changes)
+- [ ] 16.4 Write CI/CD scheduled job for daily real API tests
+- [ ] 16.5 Create cached real response fixtures (offline testing)
+- [ ] 16.6 Implement backward compatibility tests (API versioning)
+- [ ] 16.7 Write new field detection tests (warnings for schema additions)
+- [ ] 16.8 Create deprecation warning tests (missing expected fields)
+
+## 17. Advanced Testing - End-to-End (Priority: HIGH - NEW)
+
+- [ ] 17.1 Implement market screening E2E workflow (search → fetch → score → export)
+- [ ] 17.2 Create property analysis E2E workflow (input → geocode → hazard → risk → report)
+- [ ] 17.3 Build portfolio analysis E2E workflow (upload → batch → portfolio fit → export)
+- [ ] 17.4 Write error recovery E2E workflow (API fail → cache → mock → degrade)
+- [ ] 17.5 Implement cross-module integration tests (data → risk → scoring → report)
+- [ ] 17.6 Create state rules integration E2E (CO/UT/ID full property analysis)
+- [ ] 17.7 Write export workflow tests (PDF, CSV, Excel generation)
+
+## 18. Advanced Testing - Compliance & Data Quality (Priority: MEDIUM - NEW)
+
+- [ ] 18.1 Implement OGC API standards tests (Features Part 1 & 2 conformance)
+- [ ] 18.2 Create GeoJSON RFC 7946 compliance tests
+- [ ] 18.3 Build CRS (Coordinate Reference System) validation tests
+- [ ] 18.4 Write ISO 19115 metadata validation tests (if applicable)
+- [ ] 18.5 Implement data integrity tests (referential, spatial, temporal)
+- [ ] 18.6 Create known-good test cases (Denver, Salt Lake City, Boise)
+- [ ] 18.7 Build cross-validation tests (EPA vs NOAA correlations)
+- [ ] 18.8 Write data accuracy tests (expert review benchmarks)
+
+## 19. Advanced Testing - Performance & Regression (Priority: MEDIUM - NEW)
+
+- [ ] 19.1 Implement baseline performance measurements (p50, p95, p99 response times)
+- [ ] 19.2 Create automated regression detection (>10% slower alerts)
+- [ ] 19.3 Build resource usage profiling (memory, CPU, disk I/O, network)
+- [ ] 19.4 Write scalability tests (linear vs exponential degradation)
+- [ ] 19.5 Implement performance trend tracking (historical comparison)
+- [ ] 19.6 Create cache hit rate monitoring under load
+- [ ] 19.7 Build database connection pooling tests
+- [ ] 19.8 Write memory leak detection tests (long-running scenarios)
+
+## 20. Testing Infrastructure & CI/CD (Priority: HIGH - NEW)
+
+- [ ] 20.1 Implement automated test execution in CI/CD (unit on commit, integration on PR)
+- [ ] 20.2 Create quality gates (100% unit pass, ≥85% coverage, ≥95% integration pass)
+- [ ] 20.3 Build test reporting dashboard (results, coverage, trends)
+- [ ] 20.4 Write failed test notifications (Slack, email)
+- [ ] 20.5 Implement nightly load tests (scheduled CI/CD job)
+- [ ] 20.6 Create nightly E2E tests (scheduled CI/CD job)
+- [ ] 20.7 Build security scanning pipeline (weekly scheduled job)
+- [ ] 20.8 Write test data management system (fixtures, mocks, caches)
+- [ ] 20.9 Implement test database isolation (temp directories per test)
+- [ ] 20.10 Create cached real data refresh job (weekly CI/CD)
