@@ -30,6 +30,7 @@ This specification defines a comprehensive multi-tier caching strategy for the A
 ## TTL Policies
 
 ### Static Data (365-day TTL)
+
 - Census ACS 5-year estimates
 - TIGER/Line shapefiles
 - ASCE 7 snow load maps
@@ -38,6 +39,7 @@ This specification defines a comprehensive multi-tier caching strategy for the A
 **Rationale:** Updated annually or less frequently
 
 ### Semi-Static Data (30-day TTL)
+
 - Building permit statistics
 - QCEW employment by industry
 - BEA regional GDP
@@ -46,6 +48,7 @@ This specification defines a comprehensive multi-tier caching strategy for the A
 **Rationale:** Updated monthly or quarterly
 
 ### Dynamic Data (7-day TTL)
+
 - BLS Current Employment Statistics (CES)
 - Local Area Unemployment Statistics (LAUS)
 - Business formation statistics
@@ -54,6 +57,7 @@ This specification defines a comprehensive multi-tier caching strategy for the A
 **Rationale:** Updated weekly or monthly
 
 ### Real-Time Data (1-hour TTL)
+
 - Air quality (EPA AQS)
 - Weather data
 - Wildfire smoke forecasts
@@ -63,27 +67,32 @@ This specification defines a comprehensive multi-tier caching strategy for the A
 ## Key Features
 
 ### 1. Cache Warming
+
 - Batch prefetch for market lists
 - Parallel API calls with rate limiting
 - Progress indicators for long operations
 
 ### 2. Intelligent Prefetching
+
 - Geographic proximity-based (nearby markets)
 - Background execution without blocking
 - Respects API rate limits
 
 ### 3. Cache Invalidation
+
 - **Time-based:** Automatic TTL expiry
 - **Version-based:** Upstream data version comparison
 - **Manual:** CLI commands for explicit purge
 
 ### 4. Monitoring & Statistics
+
 - Hit/miss rate tracking per data source
 - Latency profiling by cache tier
 - Storage utilization monitoring
 - Performance degradation alerts
 
 ### 5. Debugging Tools
+
 - Cache inspection CLI commands
 - Entry validation and repair
 - Export to JSON for analysis
@@ -199,18 +208,21 @@ cache:
 ## Testing Strategy
 
 ### Unit Tests
+
 - Cache key generation
 - TTL expiry logic
 - Compression/decompression
 - LRU eviction
 
 ### Integration Tests
+
 - Multi-tier cache flow
 - Concurrent access (SQLite WAL)
 - Cache warming with real APIs
 - Graceful degradation on failure
 
 ### Performance Tests
+
 - Latency benchmarks by tier
 - Cache hit rate under load
 - Storage growth over time
@@ -219,17 +231,20 @@ cache:
 ## Migration Path
 
 ### Phase 1: Current State (Completed)
+
 - Basic SQLite caching
 - Manual TTL configuration
 - Simple get/set operations
 
 ### Phase 2: Enhanced Caching (Module 10)
+
 - In-memory LRU layer
 - Source-specific TTL policies
 - Cache warming and prefetching
 - Statistics and monitoring
 
 ### Phase 3: Production Hardening (Future)
+
 - Distributed Redis backend
 - Advanced eviction strategies
 - Real-time monitoring dashboards
